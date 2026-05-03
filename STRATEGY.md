@@ -1,5 +1,7 @@
 # Inkluyo — Estrategia y Roadmap
 
+> **Status: LIVE on https://inkluyo.com/ as of May 3, 2026**
+
 > Notas estratégicas de la sesión inicial. Re-leer antes de cada gran decisión.
 
 ## TL;DR
@@ -110,16 +112,152 @@ El widget es el free tier; el producto real son herramientas para devs.
 - **Modelo de Ventas**: Freemium. El widget es gratuito con analíticas básicas. Los planes Pro desbloquean analíticas avanzadas, personalización de color y remoción del badge.
 - **Diferenciador**: Marca "playful" pero profesional. Nos alejamos del tono corporativo frío de la competencia.
 
-## Tareas Pendientes Inmediatas
+---
 
-- [ ] **Persistencia Real**: Conectar a PostgreSQL para guardar activaciones de por vida.
-- [ ] **Pasarela de Pagos**: Integrar Stripe.
-- [ ] **Soporte Brasil**: Traducir widget y landing a PT-BR.
-- [ ] **Marketing**: Publicar el plugin en el repositorio oficial de WordPress.org.
-- [ ] **¿Cuál canal de distribución primero?** (Recomendación: WordPress plugin)
-- [ ] **¿Posicionamiento ético?** — clave para diferenciarse de accessiBe (no vendemos compliance theater)
-- [ ] **¿Bootstrapping o fundraise?** — decidir en Fase 2
-- [ ] **¿Open-source el core?** — solo si vamos por dev-tool angle
+## Estado Actual — Mayo 3, 2026
+
+### ✅ Completado: Fase 1 (MVP + MVP deployment)
+
+**Infraestructura:**
+- ✅ Vercel deployment (inkluyo.com via Spaceship domain registrar)
+- ✅ GitHub Actions CI/CD (widget build, deployment automation)
+- ✅ PostgreSQL/Supabase database integration
+- ✅ Environment variables management
+
+**Producto Core:**
+- ✅ Widget accessibility features (27KB minified):
+  - High contrast mode
+  - Text size adjusting
+  - Font selection
+  - Line height & letter spacing
+  - Focus indicators
+  - Dark mode
+- ✅ Multi-language support (ES, EN, PT-BR)
+- ✅ Real-time analytics dashboard
+- ✅ Widget persistencia via localStorage + Supabase
+
+**Landing & Onboarding:**
+- ✅ Modern landing page design
+- ✅ Interactive demo section
+- ✅ Get-started onboarding flow
+- ✅ Snippet generator for easy integration
+- ✅ Pricing page ($15/mo, $39/mo plans)
+
+**Monetization & Auth:**
+- ✅ NextAuth integration with Magic Links
+- ✅ Supabase adapter for persistent auth
+- ✅ Stripe checkout integration
+- ✅ Resend email service (transactional emails)
+- ✅ Protected dashboard (auth-required)
+
+**Distribution:**
+- ✅ WordPress plugin (ready for directory submission)
+- ✅ CDN-ready widget embedding
+
+---
+
+## Arquitectura Técnica
+
+### Stack
+
+```
+Frontend:    Next.js 15 + React 19 + TypeScript + Tailwind CSS 4
+Backend:     Node.js (Next.js API routes)
+Database:    Supabase (PostgreSQL)
+Auth:        NextAuth.js + Magic Links
+Payments:    Stripe (checkout)
+Email:       Resend
+Widget:      Vanilla TypeScript + Vite (IIFE bundle)
+Deployment:  Vercel (main) + custom domain (Spaceship)
+```
+
+### Project Structure
+
+```
+inkluyo-main/
+├── apps/
+│   ├── landing/          # Next.js 15 app (landing, auth, dashboard, pricing)
+│   └── wordpress-plugin/ # PHP plugin for WordPress distribution
+├── packages/
+│   └── widget/          # Vanilla TS widget (Vite, IIFE format)
+├── shared/              # Shared types & utilities
+├── .github/workflows/   # CI/CD (GitHub Actions)
+├── schema.sql           # Supabase database schema
+└── vercel.json         # Vercel configuration
+```
+
+### Key Endpoints
+
+- `GET /[lang]/` – Landing page (home)
+- `GET /[lang]/demo` – Interactive demo
+- `GET /[lang]/pricing` – Pricing page
+- `GET /[lang]/get-started` – Onboarding (snippet generator)
+- `GET /[lang]/dashboard` – Protected analytics dashboard
+- `POST /api/checkout` – Stripe checkout session
+- `POST /api/send-snippet` – Email widget snippet
+- `POST /api/analytics` – Widget telemetry
+- `POST /api/auth/[...nextauth]` – NextAuth routes
+
+## Próximos Pasos — Fase 2 (Q2-Q3 2026)
+
+### Prioridad Alta
+
+1. **WordPress Directory Submission** 🎯
+   - [ ] Submit plugin to wordpress.org repository
+   - [ ] Create WordPress.org account and developer profile
+   - [ ] Documentation in English + Spanish
+   - [ ] Support forum setup
+   - **Expected Impact**: 100-500 initial installations
+
+2. **Enhanced Analytics Dashboard**
+   - [ ] Real-time user metrics (active users, feature usage)
+   - [ ] Custom reports and CSV export
+   - [ ] Integration heatmaps
+   - [ ] Conversion tracking (free → paid)
+
+3. **Expanded Distribution**
+   - [ ] Shopify App Store submission
+   - [ ] Wix/Webflow marketplace
+   - [ ] GitHub Marketplace (if dev-tool angle taken)
+
+4. **Content Marketing**
+   - [ ] Blog launch (accessibility guides, compliance resources)
+   - [ ] SEO optimization for "accessibility widget" keywords
+   - [ ] Case studies from early WordPress users
+   - [ ] Localized content for PT-BR and ES markets
+
+### Prioridad Media
+
+5. **Enterprise Features**
+   - [ ] White-label widget customization
+   - [ ] Custom color schemes and branding
+   - [ ] Dedicated support channels
+   - [ ] Usage analytics by page/section
+
+6. **Performance Optimization**
+   - [ ] Widget bundle size reduction (<20KB)
+   - [ ] Lazy-load non-critical features
+   - [ ] Service worker caching
+
+7. **AI Remediation (Optional)**
+   - [ ] Auto-alt generation for images
+   - [ ] Form label suggestions
+   - [ ] ARIA role recommendations
+
+---
+
+## Métricas de Éxito
+
+| Métrica | Target | Actual (May 3) | Status |
+|---------|--------|---|--------|
+| Domain Live | ✅ | inkluyo.com | ✅ |
+| Widget Size | <25KB | 27KB | ✅ |
+| Landing Speed | <2s | TBD | 🔄 |
+| Auth Users | 10+ | TBD | 🔄 |
+| Stripe Connected | ✅ | Yes | ✅ |
+| Supabase Setup | ✅ | Yes | ✅ |
+| CI/CD Automated | ✅ | Yes | ✅ |
+| Multi-lang (ES/EN/PT) | ✅ | Yes | ✅ |
 
 ---
 

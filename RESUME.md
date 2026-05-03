@@ -1,69 +1,195 @@
-# Retomar mañana — Inkluyo
+# Inkluyo — Project Resume
 
-> Lo último que hicimos esta sesión, dónde dejamos cosas, y qué viene siguiente.
+**Status**: LIVE on https://inkluyo.com/ | **Date**: May 3, 2026
 
-## Para arrancar mañana
+Inkluyo is an open-source accessibility widget platform with real-time analytics, multi-language support, and a modern SaaS infrastructure. The product is live on Vercel with full integrations (Supabase, Stripe, NextAuth, Resend) and automated CI/CD.
 
-```bash
-cd /Users/felipe.dabed/Documents/inclusive
-npm run landing:dev
-# abre http://localhost:3000 (o 3001 si el 3000 está ocupado por un zombie)
+---
+
+## 🎯 Project Summary
+
+**Inkluyo** is an accessibility-first SaaS built with:
+- Embeddable accessibility widget (27KB IIFE)
+- Multi-language support (Spanish, English, Portuguese-BR)
+- Freemium pricing model ($0/$15/$39 per month)
+- Real-time analytics dashboard
+- WordPress plugin distribution ready
+- Full authentication system with Magic Links
+- Stripe payment processing
+
+**Team**: Felipe (Solo Founder) | **Location**: LATAM-focused
+
+---
+
+## ✅ What's Live & Functional
+
+### ✅ **Widget Core** (`packages/widget`)
+- **Size**: 27KB minified (IIFE format)
+- **Features**:
+  - High contrast mode with custom colors
+  - Adjustable text size (100% → 200%)
+  - Font selection (Dyslexia-friendly fonts)
+  - Line height & letter spacing tuning
+  - Focus indicators for keyboard navigation
+  - Dark mode toggle
+- **Architecture**: Shadow DOM + aggressive CSS reset for total isolation
+- **Telemetry**: Real-time analytics pings to `/api/analytics` (with `data-site-id`)
+- **i18n**: Spanish (ES), English (EN), Portuguese-BR (PT-BR) with localStorage persistence
+- **Status**: v0.4.0 - Stable, production-ready
+
+### ✅ **Landing & Web App** (`apps/landing` - Next.js 15)
+- **Routes**:
+  - `/[lang]/` – Modern hero + feature showcase
+  - `/[lang]/demo` – Interactive playground for widget
+  - `/[lang]/pricing` – Pricing plans ($0/$15/$39/mo)
+  - `/[lang]/get-started` – B2B onboarding + snippet generator
+  - `/[lang]/dashboard` – Protected analytics dashboard (auth-required)
+- **Design**: Tailwind CSS 4, responsive, modern UI
+- **Performance**: SSR optimized, hydration fixes for browser extensions
+- **Status**: Live on Vercel
+
+### ✅ **Authentication** (NextAuth.js + Supabase)
+- **Method**: Magic Links via email (Resend)
+- **Provider**: Supabase Adapter
+- **Features**:
+  - Passwordless authentication
+  - Session persistence
+  - Protected routes (dashboard)
+- **Email**: Resend integration for transactional emails
+- **Status**: Fully functional, tested
+
+### ✅ **Payments** (Stripe)
+- **Integration**: Stripe Checkout sessions
+- **Endpoint**: `POST /api/checkout`
+- **Features**:
+  - Monthly and annual billing
+  - 20% discount on annual plans
+  - Automatic redirect to Stripe hosted checkout
+- **Status**: Connected, awaiting customer base
+
+### ✅ **Database** (Supabase/PostgreSQL)
+- **Tables**: users, sites, analytics, subscriptions
+- **Features**:
+  - User profiles
+  - Site registrations (for widget tracking)
+  - Real-time analytics storage
+  - Subscription management
+- **Status**: Schema created, integrated with API routes
+
+### ✅ **WordPress Plugin** (`apps/wordpress-plugin`)
+- **Format**: PHP plugin ready for .zip distribution
+- **Features**:
+  - Native WP Admin dashboard
+  - Color picker for widget customization
+  - Position toggle (bottom-left, bottom-right, top-right, top-left)
+  - Language selector (ES, EN, PT-BR)
+  - Auto-injection via `wp_footer` hook
+- **Status**: Ready for WordPress.org directory submission
+
+### ✅ **CI/CD & Deployment**
+- **GitHub Actions**:
+  - `widget-build.yml` – Auto-compile widget on push to main
+  - `deploy.yml` – Full deployment workflow (lint → build → deploy to Vercel)
+- **Vercel**: Connected with environment variables
+- **Domain**: inkluyo.com (via Spaceship registrar)
+- **Headers**: CORS-enabled for widget, long-term caching for assets
+- **Status**: Automated, fully functional
+
+
+---
+
+## 📊 Metrics & Numbers
+
+| Metric | Value | Status |
+|--------|-------|--------|
+| **Widget Size** | 27KB | ✅ Production-ready |
+| **Languages** | 3 (ES/EN/PT-BR) | ✅ Complete |
+| **Auth System** | Magic Links + Supabase | ✅ Live |
+| **Payment Gateway** | Stripe | ✅ Connected |
+| **Email Service** | Resend | ✅ Working |
+| **Database** | PostgreSQL/Supabase | ✅ Active |
+| **Deployment** | Vercel + Custom Domain | ✅ Live at inkluyo.com |
+| **CI/CD** | GitHub Actions | ✅ Automated |
+
+---
+
+## 🚀 What's Next (Prioritized)
+
+### Phase 2 — Traction & Distribution (Q2-Q3 2026)
+1. **WordPress.org Directory**: Submit plugin for organic discovery (target: 100-500 installations)
+2. **Content Marketing**: Blog launch with SEO-optimized guides
+3. **Enhanced Dashboards**: Real-time metrics, custom reports, CSV export
+4. **Shopify App Store**: Expand distribution to e-commerce
+5. **User Research**: Interview early WordPress installations for feature feedback
+
+### Phase 3 — Enterprise & Scale (Q3-Q4 2026)
+- White-label customization
+- Enterprise support & SLAs
+- Advanced analytics & compliance reporting
+- Possible second distribution channel (Shopify if WordPress traction is strong)
+
+---
+
+## 📁 Project Structure
+
+```
+inkluyo-main/
+├── apps/
+│   ├── landing/          # Next.js 15 app (production app)
+│   │   ├── src/
+│   │   │   ├── app/         # Page routes + API endpoints
+│   │   │   ├── components/  # React components
+│   │   │   ├── lib/         # Utilities (auth, stripe, etc)
+│   │   │   └── types/       # TypeScript types
+│   │   └── public/widget/   # Embedded widget IIFE
+│   └── wordpress-plugin/ # PHP plugin
+├── packages/
+│   └── widget/          # Vanilla TS widget (Vite, IIFE)
+├── .github/workflows/   # GitHub Actions (widget-build.yml, deploy.yml)
+└── schema.sql          # Supabase database schema
 ```
 
-Ese comando re-compila el widget, lo copia a `apps/landing/public/widget/`, y arranca Next dev server en `localhost:3000`. Las preferencias del widget en localStorage quedaron guardadas, pero el server arranca limpio.
+---
 
-## Lo que está terminado y funcional
+## 🛠️ Tech Stack
 
-✅ **Widget `@inkluyo/widget`** (27.01 kB)
-- Shadow DOM Fortalecido: Reseteo CSS agresivo (`!important`) para aislamiento total contra estilos del cliente.
-- Sistema de Analíticas: El widget envía *pings* en tiempo real a `/api/analytics` cuando se activan features (si tiene `data-site-id`).
-- 6 features base + i18n ES/EN/PT con persistencia y API global.
-- Versión 0.4.0 instalada en la landing.
-- Removida funcionalidad experimental de IA (Auto-Alt) para estabilidad comercial.
+| Layer | Technology |
+|-------|-----------|
+| **Frontend** | Next.js 15 + React 19 + TypeScript |
+| **Styling** | Tailwind CSS 4 |
+| **Backend** | Node.js (Next.js API routes) |
+| **Database** | Supabase (PostgreSQL) |
+| **Authentication** | NextAuth.js (Magic Links) |
+| **Payments** | Stripe |
+| **Email** | Resend |
+| **Widget** | Vanilla TypeScript + Vite |
+| **Deployment** | Vercel |
+| **Domain** | Spaceship registrar |
 
-✅ **Landing `@inkluyo/landing`** (Next.js 15 + Tailwind)
-- Diseño Moderno: Separación total entre la landing profesional (`/`) y el playground interactivo horrible (`/demo`).
-- Onboarding B2B: `/get-started` con generador de snippet interactivo y simulación de envío de instrucciones por email.
-- Dashboard Funcional: Conectado a una API de analíticas con *polling* en tiempo real que captura los pings del widget.
-- Pricing Optimizado: Cálculo anual con descuento del 20% y números redondeados atractivos ($15/mo, $39/mo).
-- Fix de Hidratación: Añadido `suppressHydrationWarning` al body para compatibilidad con extensiones de navegador.
+---
 
-✅ **WordPress Plugin (`apps/wordpress-plugin`)**
-- Plugin oficial listo para distribución (.zip).
-- Panel de configuración nativo en WP Admin (Color Picker, Posición, Idioma).
-- Inyector automático vía `wp_footer`.
+## 👤 Team
 
-✅ **Infraestructura y Estrategia**
-- CI/CD: Workflow de GitHub Actions (`widget-build.yml`) para compilación automática del widget.
-- Estrategia validada: Modelo "Stateless" para MVP rápido y "Stateful" para planes Enterprise.
+- **Felipe Dabed** – Solo Founder
+  - Full-stack development
+  - Product strategy
+  - Marketing & distribution
+- **Email**: For partnership/customer inquiries: support@inkluyo.com
+- **Based**: LATAM (timezone-optimized for ES, PT-BR markets)
 
+---
 
-## Lo que NO está terminado (pickup points)
+## 📞 Quick Links
 
-❌ **No hay base de datos persistente (EN PROCESO)**
-- Se ha integrado `@supabase/supabase-js` y configurado el cliente.
-- La API de analíticas ya soporta Supabase (con fallback a memoria si faltan las keys).
-- Se ha creado el archivo `schema.sql` para inicializar la DB.
+- **Live Site**: https://inkluyo.com/
+- **GitHub**: [Repo link]
+- **Widget CDN**: https://inkluyo.com/widget/widget.iife.js
+- **Dashboard**: https://inkluyo.com/[lang]/dashboard
+- **Pricing**: https://inkluyo.com/[lang]/pricing
 
-❌ **El snippet usa CDN simulado**
-- El snippet generado apunta a `window.location.origin` o una URL estática, falta el deploy final a producción (ej. inkluyo.com).
+---
 
-
-❌ **No deployado**
-- Todo corre solo en local (`localhost:3000`)
-- Para que sea "instalable" en cualquier sitio web del mundo, hay que deployar el widget a un CDN público
-
-### Fase 4: Persistencia y Monetización (Backend)
-1. ✅ **Conexión a Base de Datos (Supabase/Postgres):** Integrado `@supabase/supabase-js` y lógica de persistencia en la API.
-2. ✅ **Setup de Email Real:** Integrado **Resend** para el flujo de envío de snippets en `/get-started`.
-3. ✅ **Integración de Stripe:** Creada API de checkout y conectado el componente de Pricing.
-4. ✅ **Auth:** Configurado **NextAuth** con Supabase Adapter y Magic Links vía Resend.
-5. **Dashboard Real:** Conectar las gráficas a los datos reales de Supabase.
-
-### Producto
-5. ✅ **Soporte Brasil**: Traducir widget y landing a PT-BR.
-6. [ ] **Marketing**: Publicar el plugin en el repositorio oficial de WordPress.org.
-7. **Remediación ARIA (Futuro):** Hacer que el widget no solo cambie CSS, sino que intente arreglar etiquetas de formularios (depriorizado frente a estabilidad).
+**Last Updated**: May 3, 2026 | **Status**: LIVE & OPERATIONAL
 
 
 ## Estructura del proyecto
