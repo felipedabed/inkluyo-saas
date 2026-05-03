@@ -12,6 +12,47 @@ interface Props {
 export function PricingCards({ lang, t }: Props) {
   const [yearly, setYearly] = useState(false);
 
+  const [loading, setLoading] = useState<string | null>(null);
+
+  const handleCheckout = async (tierId: string) => {
+    if (tierId === "enterprise") return; // Handled by contact link
+    
+    setLoading(tierId);
+    try {
+      // Mapeo de IDs (estos deben coincidir con tus IDs de Stripe)
+      const priceMap: Record<string, { monthly: string; yearly: string }> = {
+        pro: {
+          monthly: "price_PRO_MONTHLY", // Reemplazar con ID real de Stripe
+          yearly: "price_PRO_YEARLY",   // Reemplazar con ID real de Stripe
+        },
+        business: {
+          monthly: "price_BIZ_MONTHLY", // Reemplazar con ID real de Stripe
+          yearly: "price_BIZ_YEARLY",   // Reemplazar con ID real de Stripe
+        }
+      };
+
+      const priceId = yearly ? priceMap[tierId].yearly : priceMap[tierId].monthly;
+
+      const res = await fetch("/api/checkout", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ priceId, planName: tierId, lang }),
+      });
+
+      const { url, error } = await res.json();
+      if (error) throw new Error(error);
+      
+      if (url) {
+        window.location.href = url;
+      }
+    } catch (err) {
+      console.error(err);
+      alert("Error starting checkout. Please check your Stripe configuration.");
+    } finally {
+      setLoading(null);
+    }
+  };
+
   return (
     <>
       <div className="flex justify-center mb-10">
@@ -52,6 +93,8 @@ export function PricingCards({ lang, t }: Props) {
         {t.tiers.map((tier) => {
           const popular = tier.id === "pro";
           const isEnterprise = tier.id === "enterprise";
+          const isLoader = loading === tier.id;
+
           return (
             <div
               key={tier.id}
@@ -132,29 +175,42 @@ export function PricingCards({ lang, t }: Props) {
                   </li>
                 ))}
               </ul>
-              <Link
-                href={isEnterprise ? "#contact" : `/${lang}/get-started`}
-                className={
-                  "mt-6 inline-flex items-center justify-center px-4 py-2.5 rounded-lg text-sm font-semibold transition " +
-                  (popular
-                    ? "text-white shadow hover:opacity-95"
-                    : "border border-[var(--color-border)] hover:bg-[var(--color-surface)] text-[var(--color-text)]")
-                }
-                style={
-                  popular
-                    ? {
-                        background:
-                          "linear-gradient(135deg, var(--color-brand) 0%, var(--color-brand-dark) 100%)",
-                      }
-                    : undefined
-                }
-              >
-                {isEnterprise ? t.ctaContact : t.cta}
-              </Link>
+              
+              {isEnterprise ? (
+                <Link
+                  href="#contact"
+                  className="mt-6 inline-flex items-center justify-center px-4 py-2.5 rounded-lg text-sm font-semibold border border-[var(--color-border)] hover:bg-[var(--color-surface)] text-[var(--color-text)] transition"
+                >
+                  {t.ctaContact}
+                </Link>
+              ) : (
+                <button
+                  type="button"
+                  disabled={!!loading}
+                  onClick={() => handleCheckout(tier.id)}
+                  className={
+                    "mt-6 inline-flex items-center justify-center px-4 py-2.5 rounded-lg text-sm font-semibold transition disabled:opacity-50 " +
+                    (popular
+                      ? "text-white shadow hover:opacity-95"
+                      : "border border-[var(--color-border)] hover:bg-[var(--color-surface)] text-[var(--color-text)]")
+                  }
+                  style={
+                    popular
+                      ? {
+                          background:
+                            "linear-gradient(135deg, var(--color-brand) 0%, var(--color-brand-dark) 100%)",
+                        }
+                      : undefined
+                  }
+                >
+                  {isLoader ? "..." : t.cta}
+                </button>
+              )}
             </div>
           );
         })}
       </div>
     </>
   );
+}
 }
