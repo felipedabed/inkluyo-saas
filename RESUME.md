@@ -57,7 +57,8 @@ Ese comando re-compila el widget, lo copia a `apps/landing/public/widget/`, y ar
 1. ✅ **Conexión a Base de Datos (Supabase/Postgres):** Integrado `@supabase/supabase-js` y lógica de persistencia en la API.
 2. ✅ **Setup de Email Real:** Integrado **Resend** para el flujo de envío de snippets en `/get-started`.
 3. ✅ **Integración de Stripe:** Creada API de checkout y conectado el componente de Pricing.
-4. **Auth:** Implementar NextAuth para que los clientes gestionen sus propios `siteId` y analíticas.
+4. ✅ **Auth:** Configurado **NextAuth** con Supabase Adapter y Magic Links vía Resend.
+5. **Dashboard Real:** Conectar las gráficas a los datos reales de Supabase.
 
 ### Producto
 5. ✅ **Soporte Brasil**: Traducir widget y landing a PT-BR.

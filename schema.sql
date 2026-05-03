@@ -1,8 +1,51 @@
--- Crear tabla de sitios (para el futuro dashboard multi-sitio)
+-- Habilitar extensión para UUIDs
+CREATE EXTENSION IF NOT EXISTS "uuid-ossp";
+
+-- Tablas para NextAuth (Supabase Adapter)
+CREATE TABLE users (
+  id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+  name TEXT,
+  email TEXT UNIQUE,
+  email_verified TIMESTAMP WITH TIME ZONE,
+  image TEXT,
+  created_at TIMESTAMP WITH TIME ZONE DEFAULT NOW()
+);
+
+CREATE TABLE accounts (
+  id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+  user_id UUID REFERENCES users(id) ON DELETE CASCADE,
+  type TEXT NOT NULL,
+  provider TEXT NOT NULL,
+  provider_account_id TEXT NOT NULL,
+  refresh_token TEXT,
+  access_token TEXT,
+  expires_at BIGINT,
+  token_type TEXT,
+  scope TEXT,
+  id_token TEXT,
+  session_state TEXT,
+  UNIQUE(provider, provider_account_id)
+);
+
+CREATE TABLE sessions (
+  id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+  user_id UUID REFERENCES users(id) ON DELETE CASCADE,
+  expires TIMESTAMP WITH TIME ZONE NOT NULL,
+  session_token TEXT UNIQUE NOT NULL
+);
+
+CREATE TABLE verification_tokens (
+  identifier TEXT,
+  token TEXT UNIQUE,
+  expires TIMESTAMP WITH TIME ZONE NOT NULL,
+  PRIMARY KEY (identifier, token)
+);
+
+-- Crear tabla de sitios (vincular a usuario)
 CREATE TABLE sites (
   id TEXT PRIMARY KEY,
   name TEXT NOT NULL,
-  owner_id UUID REFERENCES auth.users(id),
+  owner_id UUID REFERENCES users(id) ON DELETE CASCADE,
   created_at TIMESTAMP WITH TIME ZONE DEFAULT NOW()
 );
 
