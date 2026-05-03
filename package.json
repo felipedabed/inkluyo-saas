@@ -1,0 +1,26 @@
+{
+  "name": "inclusive",
+  "version": "1.0.0",
+  "private": true,
+  "workspaces": [
+    "apps/*",
+    "packages/*"
+  ],
+  "scripts": {
+    "dev": "turbo run dev",
+    "build": "turbo run build",
+    "lint": "turbo run lint",
+    "widget:dev": "npm run dev --workspace=packages/widget",
+    "widget:build": "npm run build --workspace=packages/widget",
+    "widget:embed": "npm run widget:build && mkdir -p apps/landing/public/widget && cp packages/widget/dist/widget.iife.js apps/landing/public/widget/widget.iife.js",
+    "landing:dev": "npm run widget:embed && npm run dev --workspace=apps/landing",
+    "landing:build": "npm run widget:embed && npm run build --workspace=apps/landing"
+  },
+  "devDependencies": {
+    "turbo": "^2.3.3",
+    "typescript": "^5.7.2"
+  },
+  "engines": {
+    "node": ">=18"
+  }
+}

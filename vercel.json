@@ -1,0 +1,22 @@
+{
+  "$schema": "https://openapi.vercel.sh/vercel.json",
+  "framework": "nextjs",
+  "buildCommand": "npm run landing:build",
+  "outputDirectory": "apps/landing/.next",
+  "installCommand": "npm install --registry https://registry.npmjs.org/",
+  "headers": [
+    {
+      "source": "/widget/widget.iife.js",
+      "headers": [
+        {
+          "key": "Cache-Control",
+          "value": "public, max-age=31536000, immutable"
+        },
+        {
+          "key": "Access-Control-Allow-Origin",
+          "value": "*"
+        }
+      ]
+    }
+  ]
+}

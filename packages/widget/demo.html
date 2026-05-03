@@ -1,0 +1,128 @@
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Inclusive Widget — Demo (Shadow DOM isolation test)</title>
+    <style>
+      /*
+        Aggressive host-page styles to verify Shadow DOM truly isolates
+        the widget. None of these should leak into the widget UI.
+      */
+      * {
+        box-sizing: content-box !important;
+      }
+      button {
+        background: red !important;
+        color: lime !important;
+        border: 4px dashed magenta !important;
+        font-size: 32px !important;
+        padding: 30px !important;
+      }
+      svg {
+        width: 200px !important;
+        height: 200px !important;
+        fill: cyan !important;
+      }
+      body {
+        font-family: "Comic Sans MS", cursive;
+        background: #fdf6e3;
+        color: #073642;
+        margin: 0;
+        padding: 40px;
+        font-size: 18px;
+      }
+      h1 {
+        font-size: 42px;
+        color: tomato;
+      }
+      a {
+        color: orange;
+        text-decoration: underline wavy;
+      }
+      p {
+        max-width: 720px;
+        line-height: 1.6;
+      }
+      .card {
+        background: #eee8d5;
+        padding: 24px;
+        border-radius: 8px;
+        margin: 24px 0;
+      }
+    </style>
+  </head>
+  <body>
+    <h1>Sitio anfitrión hostil 👹</h1>
+    <p>
+      Esta página tiene reglas CSS extremadamente agresivas (todos los botones
+      en rojo con borde magenta, SVGs gigantes, <code>box-sizing</code>
+      incorrecto, etc.). Si el Shadow DOM hace bien su trabajo, el widget de
+      <strong>Inclusive</strong> debe verse perfecto a pesar de todo este caos.
+    </p>
+
+    <div class="card">
+      <h2>Algunos elementos del sitio:</h2>
+      <button>Botón del sitio</button>
+      <p>
+        Visita <a href="#">este enlace</a> o <a href="#">aquel</a> para
+        comprobar el feature de "Resaltar enlaces".
+      </p>
+    </div>
+
+    <div class="card">
+      <h2>Lorem ipsum largo (para "Texto grande" y "Dislexia")</h2>
+      <p>
+        Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do
+        eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim
+        ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut
+        aliquip ex ea commodo consequat. Duis aute irure dolor in
+        reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla
+        pariatur. Excepteur sint occaecat cupidatat non proident, sunt in
+        culpa qui officia deserunt mollit anim id est laborum.
+      </p>
+    </div>
+
+    <div class="card">
+      <h2>Elemento animado (para "Detener animaciones")</h2>
+      <div class="dot" aria-hidden="true"></div>
+      <p>
+        El círculo de arriba debe rebotar continuamente. Al activar
+        "Detener animaciones" debe quedarse quieto al instante.
+      </p>
+    </div>
+
+    <div class="card">
+      <h2>Imagen (para "Alto contraste")</h2>
+      <img
+        src="https://picsum.photos/seed/inclusive/480/240"
+        alt="Imagen de prueba"
+        width="480"
+        height="240"
+        style="border-radius: 8px"
+      />
+      <p>
+        Las imágenes deben re-invertirse para no quedar como negativo
+        fotográfico cuando el modo alto contraste está activo.
+      </p>
+    </div>
+
+    <style>
+      @keyframes inc-bounce {
+        0%, 100% { transform: translateY(0); background: tomato; }
+        50% { transform: translateY(-40px); background: dodgerblue; }
+      }
+      .dot {
+        width: 60px;
+        height: 60px;
+        border-radius: 50%;
+        background: tomato;
+        animation: inc-bounce 1.2s ease-in-out infinite;
+        margin: 16px 0 24px;
+      }
+    </style>
+
+    <!-- Compiled widget -->
+    <script src="./dist/widget.iife.js" defer></script>
+  </body>
+</html>

@@ -1,0 +1,420 @@
+@import "tailwindcss";
+
+:root {
+  --color-brand: #6c47ff;
+  --color-brand-dark: #4f2fe0;
+  --color-brand-tint: #efeaff;
+  --color-bg: #ffffff;
+  --color-surface: #f5f5fb;
+  --color-surface-2: #ececf6;
+  --color-text: #0f0f1f;
+  --color-text-muted: #6b6b85;
+  --color-border: #ececf6;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  background-color: var(--color-bg);
+  color: var(--color-text);
+  font-family: var(--font-geist-sans, system-ui, sans-serif);
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+
+/* ============= HORRIBLE STYLES (deliberately bad UX) ============= */
+/* Scoped to .horrible — only applies to the landing page hero. */
+
+.horrible {
+  font-family: "Comic Sans MS", "Comic Sans", "Marker Felt", cursive !important;
+  background:
+    repeating-linear-gradient(
+      45deg,
+      #fffacd 0px,
+      #fffacd 32px,
+      #ffe5b4 32px,
+      #ffe5b4 64px
+    );
+  color: #2a2a2a;
+  cursor: url(
+      "data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='10' height='10' viewBox='0 0 10 10'><path d='M0 0 L0 8 L3 6 L4 9 L5 9 L4 5 L8 5 Z' fill='black'/></svg>"
+    )
+    0 0,
+    auto;
+}
+
+.horrible h1 {
+  color: #ffd700;
+  text-shadow: 2px 2px 0 #ff69b4, 4px 4px 0 #00ced1, -1px -1px 0 #fff;
+  font-size: clamp(2.5rem, 7vw, 5.5rem);
+  letter-spacing: -0.02em;
+  font-weight: 900;
+  line-height: 0.9;
+  font-style: italic;
+  font-family: "Comic Sans MS", "Comic Sans", cursive;
+  animation: horrible-wobble 3.2s ease-in-out infinite;
+  margin: 0 0 1rem;
+}
+
+.horrible .eyebrow {
+  font-size: 11px;
+  letter-spacing: -0.04em;
+  color: #cccccc;
+  background: linear-gradient(90deg, magenta, lime, cyan);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  font-weight: 800;
+  text-transform: uppercase;
+  margin-bottom: 0.5rem;
+  display: inline-block;
+}
+
+.horrible .subtitle {
+  color: #c8c8c8;
+  font-size: 14px;
+  line-height: 1;
+  letter-spacing: -0.05em;
+  max-width: 720px;
+  margin: 0 0 1.5rem;
+  font-style: italic;
+}
+
+.horrible .pointer {
+  font-family: "Comic Sans MS", cursive;
+  color: #ff1493;
+  font-size: 1.25rem;
+  font-weight: 800;
+  display: inline-block;
+  animation: horrible-pulse 0.6s ease-in-out infinite alternate;
+}
+
+/* The "clarity" island inside the horrible page — clean, professional,
+   intentionally legible to anchor what Inkluyo actually IS. */
+.horrible .clarity-card {
+  background: #ffffff;
+  color: #0f0f1f;
+  border: 1px solid #ececf6;
+  border-radius: 14px;
+  padding: 1.25rem 1.5rem;
+  margin: 0.5rem 0 1.25rem;
+  max-width: 720px;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  font-size: 1.0625rem;
+  line-height: 1.55;
+  font-style: normal;
+  letter-spacing: -0.005em;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.08);
+  animation: none;
+}
+
+.horrible .clarity-card code {
+  background: #f5f5fb;
+  padding: 1px 6px;
+  border-radius: 4px;
+  font-family: "SFMono-Regular", Menlo, Consolas, monospace;
+  font-size: 0.9em;
+  color: #6c47ff;
+}
+
+.horrible .cta-row {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 1rem;
+  margin-top: 1.25rem;
+}
+
+.horrible .cta-secondary {
+  background: #ffffff;
+  color: #0f0f1f;
+  border: 2px solid #0f0f1f;
+  padding: 0.85rem 1.5rem;
+  font-size: 1rem;
+  font-weight: 700;
+  font-style: normal;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  border-radius: 10px;
+  text-decoration: none;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  transition: transform 0.15s ease, box-shadow 0.15s ease;
+  cursor: pointer;
+}
+
+.horrible .cta-secondary:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.12);
+}
+
+/* "How it works" island — three clean steps inside the horrible page. */
+.horrible .how-section {
+  background: #ffffff;
+  color: #0f0f1f;
+  border-radius: 18px;
+  padding: 2rem 1.5rem;
+  margin: 1rem auto;
+  max-width: 1024px;
+  box-shadow: 0 8px 28px rgba(0, 0, 0, 0.08);
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  font-style: normal;
+}
+
+.horrible .how-headline {
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  font-size: 1.5rem;
+  font-weight: 800;
+  letter-spacing: -0.02em;
+  color: #0f0f1f;
+  text-align: center;
+  margin: 0 0 1.5rem;
+}
+
+.horrible .how-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 1rem;
+}
+
+@media (min-width: 720px) {
+  .horrible .how-grid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+.horrible .how-step {
+  background: #f5f5fb;
+  border: 1px solid #ececf6;
+  border-radius: 12px;
+  padding: 1rem 1.1rem;
+  font-family: inherit;
+  transform: none;
+}
+
+.horrible .how-step h3 {
+  font-size: 0.95rem;
+  font-weight: 800;
+  margin: 0 0 0.5rem;
+  color: #6c47ff;
+  letter-spacing: -0.01em;
+}
+
+.horrible .how-step p {
+  font-size: 0.9rem;
+  line-height: 1.5;
+  color: #4a4a60;
+  margin: 0;
+}
+
+.horrible .cta-shouting {
+  background: linear-gradient(135deg, hotpink, gold, magenta, gold);
+  background-size: 300% 300%;
+  color: white;
+  padding: 1rem 2rem;
+  font-size: 1.4rem;
+  font-weight: 900;
+  font-style: italic;
+  border: 4px dashed #00ffff;
+  border-radius: 0;
+  text-transform: uppercase;
+  font-family: "Comic Sans MS", cursive;
+  cursor: pointer;
+  animation: horrible-shake 0.4s ease-in-out infinite,
+    horrible-rainbow 4s ease-in-out infinite;
+  box-shadow: 4px 4px 0 lime, 8px 8px 0 magenta;
+  text-decoration: none;
+  display: inline-block;
+}
+
+.horrible .features-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  gap: 1rem;
+  margin-top: 2rem;
+}
+
+.horrible .feature-card {
+  padding: 1rem;
+  border: 2px solid #ff1493;
+  background: #f5deb3;
+  font-family: "Times New Roman", serif;
+  position: relative;
+}
+
+.horrible .feature-card:nth-child(2n) {
+  background: #ffe4e1;
+  border-color: lime;
+  font-family: "Courier New", monospace;
+  transform: rotate(-1deg);
+}
+
+.horrible .feature-card:nth-child(3n) {
+  background: #e0ffff;
+  border-color: orange;
+  font-family: "Brush Script MT", "Snell Roundhand", cursive;
+  transform: rotate(0.7deg);
+}
+
+.horrible .feature-card h3 {
+  color: #b22222;
+  font-size: 16px;
+  margin: 0 0 0.5rem;
+}
+
+.horrible .feature-card p {
+  font-size: 12px;
+  color: #8a8a8a;
+  margin: 0;
+  line-height: 1.2;
+}
+
+.horrible a {
+  color: inherit;
+  text-decoration: none;
+  font-weight: 600;
+}
+
+.horrible .stats-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 1rem;
+  margin: 2rem 0;
+}
+
+@media (min-width: 720px) {
+  .horrible .stats-grid {
+    grid-template-columns: repeat(4, 1fr);
+  }
+}
+
+.horrible .stat {
+  border: 2px ridge #b8860b;
+  padding: 1rem;
+  background: #ffefd5;
+  text-align: center;
+  font-family: "Impact", "Charcoal", sans-serif;
+  transform: rotate(-0.5deg);
+}
+
+.horrible .stat:nth-child(2) { transform: rotate(0.8deg); background: #fff5ee; }
+.horrible .stat:nth-child(3) { transform: rotate(-0.3deg); background: #f0fff0; }
+.horrible .stat:nth-child(4) { transform: rotate(0.5deg); background: #fff0f5; }
+
+.horrible .stat-value {
+  font-size: 2.5rem;
+  color: #ff4500;
+  font-weight: 900;
+  display: block;
+  line-height: 1;
+}
+
+.horrible .stat-label {
+  font-size: 11px;
+  color: #888;
+  margin-top: 0.5rem;
+  display: block;
+  font-family: serif;
+  font-style: italic;
+}
+
+.horrible .quote-card {
+  background: #fdf5e6;
+  border: 2px dotted #b8860b;
+  padding: 1rem;
+  margin: 1rem 0;
+  position: relative;
+  font-family: "Lucida Handwriting", "Brush Script MT", cursive;
+}
+
+.horrible .quote-card:nth-child(2n) {
+  background: #f0f8ff;
+  font-family: "Courier New", monospace;
+  border-style: dashed;
+}
+
+.horrible .quote-card:nth-child(3n) {
+  background: #fff0f5;
+  font-family: "Comic Sans MS", cursive;
+  border-style: double;
+}
+
+.horrible .quote-author {
+  font-size: 11px;
+  color: #999;
+  margin-top: 0.5rem;
+  display: block;
+}
+
+.horrible .footer {
+  background: #2a2a2a;
+  color: #888;
+  padding: 2rem 1rem;
+  font-size: 11px;
+  text-align: center;
+  font-family: serif;
+  margin-top: 4rem;
+}
+
+.horrible .footer .micro {
+  font-size: 9px;
+  color: #444;
+  margin-top: 1rem;
+  font-style: italic;
+}
+
+/* ============= ANIMATIONS ============= */
+
+@keyframes horrible-wobble {
+  0%, 100% { transform: rotate(-1deg) skew(0deg); }
+  50% { transform: rotate(1deg) skew(-1deg); }
+}
+
+@keyframes horrible-pulse {
+  0% { transform: translateX(0) scale(1); }
+  100% { transform: translateX(8px) scale(1.05); }
+}
+
+@keyframes horrible-shake {
+  0%, 100% { transform: translate(0, 0) rotate(-1deg); }
+  25% { transform: translate(-2px, 1px) rotate(1deg); }
+  50% { transform: translate(2px, -1px) rotate(-2deg); }
+  75% { transform: translate(-1px, 2px) rotate(1deg); }
+}
+
+@keyframes horrible-rainbow {
+  0%, 100% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+}
+
+@keyframes horrible-bounce {
+  0%, 100% { transform: translateY(0) rotate(0deg); }
+  50% { transform: translateY(-10px) rotate(5deg); }
+}
+
+@keyframes horrible-spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+@keyframes horrible-marquee {
+  0% { transform: translateX(100%); }
+  100% { transform: translateX(-100%); }
+}
+
+@keyframes inkluyo-fadein {
+  from { opacity: 0; transform: translateY(8px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* ============= ACHIEVEMENT TOAST ============= */
+
+.achievement-toast {
+  animation: inkluyo-fadein 0.3s ease-out;
+}

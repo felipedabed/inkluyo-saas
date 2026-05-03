@@ -1,0 +1,11 @@
+{
+  "/api/analytics/route": "/api/analytics",
+  "/api/send-snippet/route": "/api/send-snippet",
+  "/_not-found/page": "/_not-found",
+  "/page": "/",
+  "/[lang]/demo/page": "/[lang]/demo",
+  "/[lang]/get-started/page": "/[lang]/get-started",
+  "/[lang]/pricing/page": "/[lang]/pricing",
+  "/[lang]/page": "/[lang]",
+  "/[lang]/dashboard/page": "/[lang]/dashboard"
+}

@@ -1,0 +1,24 @@
+{
+  "name": "@inkluyo/widget",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Inkluyo Accessibility Widget – injectable via <script> tag",
+  "main": "./dist/widget.iife.js",
+  "module": "./dist/widget.es.js",
+  "exports": {
+    ".": {
+      "import": "./dist/widget.es.js",
+      "require": "./dist/widget.iife.js"
+    }
+  },
+  "files": ["dist"],
+  "scripts": {
+    "dev": "vite build --watch --mode development",
+    "build": "vite build",
+    "lint": "tsc --noEmit"
+  },
+  "devDependencies": {
+    "typescript": "^5.7.2",
+    "vite": "^6.3.3"
+  }
+}

@@ -1,0 +1,81 @@
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Sitio random de un cliente — usando Inkluyo via 1 línea</title>
+    <style>
+      body {
+        font-family: Georgia, serif;
+        max-width: 720px;
+        margin: 60px auto;
+        padding: 0 20px;
+        line-height: 1.6;
+        color: #2a2a2a;
+      }
+      h1 { color: #1a4d8c; }
+      h2 { color: #555; border-bottom: 1px solid #ddd; padding-bottom: 4px; }
+      a  { color: #1a4d8c; }
+      img { max-width: 100%; border-radius: 6px; margin: 1rem 0; }
+      .card { background: #f5f5fb; padding: 1.25rem; border-radius: 8px; margin: 1.5rem 0; }
+      .dot { width: 50px; height: 50px; border-radius: 50%; background: tomato; margin: 1rem 0;
+             animation: bounce 1s ease-in-out infinite alternate; }
+      @keyframes bounce { to { transform: translateY(-30px); background: dodgerblue; } }
+    </style>
+  </head>
+  <body>
+    <h1>Pastelería Doña Marta</h1>
+    <p>
+      Esto simula un sitio cualquiera que NO sabe nada de Inkluyo, NO tiene
+      build step, NO usa React. Es solo HTML estático. La única integración
+      es la línea de <code>&lt;script&gt;</code> al final del body.
+    </p>
+
+    <h2>Carta del día</h2>
+    <ul>
+      <li>Croissant de manteca — $2.500</li>
+      <li>Pan de chocolate — $2.800</li>
+      <li>Tarta de manzana — $4.200</li>
+    </ul>
+
+    <div class="card">
+      <h2>Sobre nosotros</h2>
+      <p>
+        Hace 30 años horneamos en el barrio. Visitá nuestra
+        <a href="#ubicacion">ubicación</a> o seguinos en
+        <a href="#redes">redes</a>.
+      </p>
+    </div>
+
+    <div class="card">
+      <h2>Algo animado (probá "Detener animaciones")</h2>
+      <div class="dot" aria-hidden="true"></div>
+    </div>
+
+    <div class="card">
+      <h2>Una imagen (probá "Alto contraste" o "Monocromo")</h2>
+      <img src="https://picsum.photos/seed/marta/600/300" alt="Pastel de muestra" />
+    </div>
+
+    <p>
+      Probá la <strong>máscara de lectura</strong> (TDAH) moviendo el mouse
+      verticalmente — solo se ve nítido lo que está cerca de tu cursor.
+    </p>
+
+    <!--
+      ════════════════════════════════════════════════════════════════════
+      ESTO ES TODO LO QUE EL CLIENTE INSTALA. UNA LÍNEA. EN EL <body>.
+      En producción la URL sería https://cdn.inkluyo.com/widget.iife.js
+      Hoy, durante desarrollo, apunta a tu dev server local.
+      ════════════════════════════════════════════════════════════════════
+    -->
+    <script
+      src="http://localhost:3000/widget/widget.iife.js?v=0.2.0"
+      data-inkluyo-widget
+      data-lang="es"
+      data-primary-color="#d4622e"
+      data-position="bottom-right"
+      defer
+    ></script>
+  </body>
+</html>
