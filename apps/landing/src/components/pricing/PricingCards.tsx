@@ -213,4 +213,4 @@ export function PricingCards({ lang, t }: Props) {
     </>
   );
 }
-}
+
