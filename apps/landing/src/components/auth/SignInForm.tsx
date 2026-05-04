@@ -18,6 +18,7 @@ export default function SignInForm() {
       console.log("[SignInForm] Attempting sign in for:", email);
       const result = await signIn("email", {
         email,
+        callbackUrl: "/dashboard",
         redirect: false,
       });
 
