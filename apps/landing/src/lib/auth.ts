@@ -2,7 +2,77 @@ import { NextAuthOptions } from "next-auth";
 import EmailProvider from "next-auth/providers/email";
 import { resend } from "@/lib/resend";
 
+// In-memory adapter for NextAuth
+const users = new Map<string, any>();
+const sessions = new Map<string, any>();
+const verificationTokens = new Map<string, any>();
+
+const memoryAdapter: any = {
+  async createUser(user: any) {
+    const id = crypto.getRandomValues(new Uint8Array(16)).toString();
+    const newUser = { ...user, id };
+    users.set(id, newUser);
+    return newUser;
+  },
+  async getUser(id: any) {
+    return users.get(id) || null;
+  },
+  async getUserByEmail(email: any) {
+    return Array.from(users.values()).find((u) => u.email === email) || null;
+  },
+  async getUserByAccount() {
+    return null; // Not needed for email provider
+  },
+  async updateUser(user: any) {
+    if (!user.id) return user;
+    users.set(user.id, user);
+    return user;
+  },
+  async deleteUser(userId: any) {
+    users.delete(userId);
+  },
+  async linkAccount(account: any) {
+    return account;
+  },
+  async unlinkAccount() {
+    // Not needed
+  },
+  async createSession({ sessionToken, userId, expires }: any) {
+    const session = { sessionToken, userId, expires };
+    sessions.set(sessionToken, session);
+    return session;
+  },
+  async getSessionAndUser(sessionToken: any) {
+    const session = sessions.get(sessionToken);
+    if (!session) return null;
+    const user = users.get(session.userId);
+    if (!user) return null;
+    return { session, user };
+  },
+  async updateSession({ sessionToken, expires }: any) {
+    const session = sessions.get(sessionToken);
+    if (!session) return null;
+    const updated = { ...session, expires };
+    sessions.set(sessionToken, updated);
+    return updated;
+  },
+  async deleteSession(sessionToken: any) {
+    sessions.delete(sessionToken);
+  },
+  async createVerificationToken({ identifier, token, expires }: any) {
+    verificationTokens.set(token, { identifier, token, expires });
+    return { identifier, token, expires };
+  },
+  async useVerificationToken({ identifier, token }: any) {
+    const verificationToken = verificationTokens.get(token);
+    if (!verificationToken || verificationToken.identifier !== identifier) return null;
+    verificationTokens.delete(token);
+    return verificationToken;
+  },
+};
+
 export const authOptions: NextAuthOptions = {
+  adapter: memoryAdapter,
   providers: [
     EmailProvider({
       async sendVerificationRequest({ identifier: email, url }) {
@@ -29,6 +99,7 @@ export const authOptions: NextAuthOptions = {
                 </div>
               `,
             });
+            console.log(`[NextAuth] Email sent to ${email}`);
           } catch (error) {
             console.error("[NextAuth] Resend error:", error);
           }

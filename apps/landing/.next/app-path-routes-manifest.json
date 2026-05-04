@@ -1,17 +1,17 @@
 {
-  "/api/checkout/route": "/api/checkout",
-  "/api/send-snippet/route": "/api/send-snippet",
-  "/api/auth/[...nextauth]/route": "/api/auth/[...nextauth]",
   "/_not-found/page": "/_not-found",
+  "/api/auth/[...nextauth]/route": "/api/auth/[...nextauth]",
+  "/api/send-snippet/route": "/api/send-snippet",
+  "/api/checkout/route": "/api/checkout",
   "/api/analytics/route": "/api/analytics",
-  "/auth/verify-request/page": "/auth/verify-request",
   "/page": "/",
+  "/auth/verify-request/page": "/auth/verify-request",
   "/auth/signin/page": "/auth/signin",
-  "/[lang]/get-started/page": "/[lang]/get-started",
   "/[lang]/auth/verify-request/page": "/[lang]/auth/verify-request",
-  "/[lang]/page": "/[lang]",
-  "/[lang]/demo/page": "/[lang]/demo",
   "/[lang]/dashboard/page": "/[lang]/dashboard",
-  "/[lang]/auth/signin/page": "/[lang]/auth/signin",
-  "/[lang]/pricing/page": "/[lang]/pricing"
+  "/[lang]/demo/page": "/[lang]/demo",
+  "/[lang]/pricing/page": "/[lang]/pricing",
+  "/[lang]/get-started/page": "/[lang]/get-started",
+  "/[lang]/page": "/[lang]",
+  "/[lang]/auth/signin/page": "/[lang]/auth/signin"
 }
