@@ -1,0 +1,56 @@
+
+> @inkluyo/landing@0.1.0 build
+> next build
+
+   ▲ Next.js 15.5.15
+   - Environments: .env.local
+
+   Creating an optimized production build ...
+ ✓ Compiled successfully in 582ms
+   Linting and checking validity of types ...
+   Collecting page data ...
+   Generating static pages (0/22) ...
+   Generating static pages (5/22) 
+   Generating static pages (10/22) 
+   Generating static pages (16/22) 
+ ✓ Generating static pages (22/22)
+   Finalizing page optimization ...
+   Collecting build traces ...
+
+Route (app)                                 Size  First Load JS
+┌ ○ /                                      134 B         102 kB
+├ ○ /_not-found                            985 B         103 kB
+├ ● /[lang]                                162 B         106 kB
+├   ├ /en
+├   ├ /es
+├   └ /pt
+├ ● /[lang]/dashboard                    1.44 kB         104 kB
+├   ├ /en/dashboard
+├   ├ /es/dashboard
+├   └ /pt/dashboard
+├ ● /[lang]/demo                         2.15 kB         108 kB
+├   ├ /en/demo
+├   ├ /es/demo
+├   └ /pt/demo
+├ ● /[lang]/get-started                  2.52 kB         105 kB
+├   ├ /en/get-started
+├   ├ /es/get-started
+├   └ /pt/get-started
+├ ● /[lang]/pricing                      1.71 kB         107 kB
+├   ├ /en/pricing
+├   ├ /es/pricing
+├   └ /pt/pricing
+├ ƒ /api/analytics                         134 B         102 kB
+├ ƒ /api/auth/[...nextauth]                134 B         102 kB
+├ ƒ /api/checkout                          134 B         102 kB
+└ ƒ /api/send-snippet                      134 B         102 kB
++ First Load JS shared by all             102 kB
+  ├ chunks/18-2d765459f0cd2fba.js          46 kB
+  ├ chunks/87c73c54-24122e7b92478d00.js  54.2 kB
+  └ other shared chunks (total)          1.92 kB
+
+
+○  (Static)   prerendered as static content
+●  (SSG)      prerendered as static HTML (uses generateStaticParams)
+ƒ  (Dynamic)  server-rendered on demand
+

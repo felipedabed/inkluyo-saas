@@ -1,0 +1,359 @@
+================================================================================
+INKLUYO DEPLOYMENT TOOLKIT - FILES CREATED
+================================================================================
+
+Date Created: 2026-05-03
+Project: Inkluyo Landing Page (Next.js 15)
+Deployment Target: Vercel with Spaceship Domain
+
+================================================================================
+EXECUTABLE SCRIPTS (3 files)
+================================================================================
+
+1. verify-integrations.sh (9.2 KB)
+   Location: /Users/Felipe/Documents/inkluyo-main/verify-integrations.sh
+   Purpose: Pre-deployment verification of all integrations
+   
+   Checks:
+   - Environment file exists and readable
+   - Supabase URL and API keys configured
+   - Stripe API keys valid format
+   - Resend API key valid format
+   - NextAuth secret and URL configured
+   - Supabase endpoint reachable
+   
+   Usage: ./verify-integrations.sh
+   Exit Code: 0 (success), 1 (critical failures)
+
+2. deploy-to-vercel.sh (9.8 KB)
+   Location: /Users/Felipe/Documents/inkluyo-main/deploy-to-vercel.sh
+   Purpose: Automated Vercel deployment with environment setup
+   
+   Features:
+   - Verifies Vercel CLI installed and user logged in
+   - Reads credentials from .env.local
+   - Links project to Vercel
+   - Configures all environment variables
+   - Supports preview and production deployments
+   - Provides domain configuration instructions
+   
+   Usage: 
+   ./deploy-to-vercel.sh preview     # Preview deployment
+   ./deploy-to-vercel.sh production  # Production deployment
+   
+   Exit Code: 0 (deployment initiated), 1 (prerequisites failed)
+
+3. test-endpoints.sh (7.1 KB)
+   Location: /Users/Felipe/Documents/inkluyo-main/test-endpoints.sh
+   Purpose: Comprehensive endpoint testing after deployment
+   
+   Tests:
+   - Server connectivity health check
+   - POST /api/analytics (record activation)
+   - GET /api/analytics (retrieve data)
+   - POST /api/checkout (Stripe checkout)
+   - POST /api/send-snippet (Resend email)
+   - GET /auth/signin (authentication page)
+   - POST /api/auth/callback/email (magic link flow)
+   
+   Usage:
+   ./test-endpoints.sh                              # Test localhost:3000
+   ./test-endpoints.sh https://inkluyo.vercel.app   # Test preview
+   ./test-endpoints.sh https://inkluyo.spaceship.com # Test production
+   
+   Exit Code: 0 (all tests passed), 1 (some failed)
+
+================================================================================
+DOCUMENTATION FILES (3 files)
+================================================================================
+
+1. DEPLOYMENT_QUICK_START.md (4.2 KB)
+   Location: /Users/Felipe/Documents/inkluyo-main/DEPLOYMENT_QUICK_START.md
+   Purpose: Quick reference guide for deployment
+   
+   Contents:
+   - 3-command deployment process
+   - Prerequisites checklist
+   - Script quick reference
+   - Deployment checklist
+   - Troubleshooting table
+   - Helpful commands
+   - Key service URLs
+   
+   Audience: Experienced developers wanting quick reference
+
+2. DEPLOYMENT_GUIDE.md (6.8 KB)
+   Location: /Users/Felipe/Documents/inkluyo-main/DEPLOYMENT_GUIDE.md
+   Purpose: Comprehensive step-by-step deployment guide
+   
+   Contents:
+   - Prerequisites and setup
+   - 7-step quick start process
+   - Environment variables documentation
+   - Detailed troubleshooting with solutions
+   - Monitoring after deployment
+   - Rollback procedures
+   - Additional resources
+   
+   Audience: First-time deployers, complete walkthrough
+
+3. DEPLOYMENT_SCRIPTS_README.md (7.2 KB)
+   Location: /Users/Felipe/Documents/inkluyo-main/DEPLOYMENT_SCRIPTS_README.md
+   Purpose: Detailed technical documentation of all scripts
+   
+   Contents:
+   - Overview of all files
+   - Detailed usage for each script
+   - Environment variables reference
+   - Troubleshooting guide
+   - Features and limitations
+   - Integration dependency map
+   
+   Audience: Technical reference, script customization
+
+================================================================================
+HOW THE SCRIPTS WORK
+================================================================================
+
+VERIFICATION FLOW:
+  verify-integrations.sh
+    └─ Checks .env.local for all required variables
+    └─ Validates variable formats (Stripe keys, JWT tokens, etc)
+    └─ Tests connectivity to external services
+    └─ Reports: PASS, WARN, or FAIL for each check
+    └─ Exit: 0 if all critical checks pass, 1 otherwise
+
+DEPLOYMENT FLOW:
+  deploy-to-vercel.sh
+    ├─ Prerequisites check (Vercel CLI, login, .env.local)
+    ├─ Load environment variables from .env.local
+    ├─ Link project to Vercel
+    ├─ Configure environment variables in Vercel
+    ├─ Set up build settings (vercel.json)
+    ├─ Initiate deployment to preview or production
+    └─ Provide next steps for domain configuration
+
+TESTING FLOW:
+  test-endpoints.sh
+    ├─ Verify server is running
+    ├─ Test each API endpoint with sample requests
+    ├─ Verify response codes (200, 400, 404)
+    ├─ Check error handling
+    ├─ Report pass/fail for each test
+    └─ Exit: 0 if all tests pass, 1 otherwise
+
+================================================================================
+ENVIRONMENT VARIABLES HANDLED
+================================================================================
+
+All scripts read from: apps/landing/.env.local
+
+Variables configured by deploy-to-vercel.sh:
+
+SUPABASE:
+  - NEXT_PUBLIC_SUPABASE_URL
+  - NEXT_PUBLIC_SUPABASE_ANON_KEY
+  - SUPABASE_SERVICE_ROLE_KEY
+
+STRIPE:
+  - STRIPE_SECRET_KEY
+  - NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY
+  - STRIPE_WEBHOOK_SECRET
+
+EMAIL:
+  - RESEND_API_KEY
+
+AUTHENTICATION:
+  - NEXTAUTH_SECRET
+  - NEXTAUTH_URL
+
+Total: 9 environment variables
+
+================================================================================
+QUICK START COMMANDS
+================================================================================
+
+1. Verify integrations:
+   $ ./verify-integrations.sh
+
+2. Test endpoints locally:
+   $ npm run landing:dev &
+   $ ./test-endpoints.sh
+   $ kill %1
+
+3. Deploy to preview:
+   $ ./deploy-to-vercel.sh preview
+
+4. Test preview deployment:
+   $ ./test-endpoints.sh https://inkluyo.vercel.app
+
+5. Deploy to production:
+   $ ./deploy-to-vercel.sh production
+
+6. Configure domain:
+   (Follow DEPLOYMENT_GUIDE.md section "Configure Spaceship Domain")
+
+7. Test production:
+   $ ./test-endpoints.sh https://inkluyo.spaceship.com
+
+================================================================================
+WHAT WAS NOT CREATED (BY DESIGN)
+================================================================================
+
+- No actual deployments (use scripts to perform them)
+- No changes to existing source code
+- No new environment variables required (uses existing .env.local)
+- No Node.js dependencies added
+- No database migrations (handled manually if needed)
+- No automated backups (follow Vercel rollback procedures)
+
+These decisions ensure the scripts are:
+  ✓ Non-destructive
+  ✓ Easy to understand
+  ✓ Minimal side effects
+  ✓ Compatible with existing setup
+
+================================================================================
+SCRIPT DEPENDENCIES
+================================================================================
+
+Required (must be installed):
+  - bash (standard shell)
+  - curl (for connectivity tests)
+  - jq (for JSON parsing)
+  - Vercel CLI (for deployment)
+
+Optional (improvements):
+  - git (to commit deployment notes)
+  - grep, sed, awk (standard Unix tools)
+
+All scripts are pure bash with no external npm dependencies.
+
+================================================================================
+VERIFYING SCRIPTS ARE EXECUTABLE
+================================================================================
+
+Verify permissions:
+  $ ls -l verify-integrations.sh deploy-to-vercel.sh test-endpoints.sh
+  Expected: -rwxr-xr-x (755 permissions)
+
+Verify syntax:
+  $ bash -n verify-integrations.sh
+  $ bash -n deploy-to-vercel.sh
+  $ bash -n test-endpoints.sh
+  Expected: No output (syntax OK)
+
+Verify functionality:
+  $ ./verify-integrations.sh
+  Expected: Verification report with passed/warned/failed checks
+
+================================================================================
+DOCUMENT READING GUIDE
+================================================================================
+
+1. First time deploying?
+   → Read: DEPLOYMENT_QUICK_START.md
+   → Then: DEPLOYMENT_GUIDE.md
+
+2. Need script details?
+   → Read: DEPLOYMENT_SCRIPTS_README.md
+
+3. Want to customize scripts?
+   → Read: DEPLOYMENT_SCRIPTS_README.md (Features & Limitations)
+   → Then: Review script source code
+
+4. Troubleshooting specific issue?
+   → Check: Troubleshooting sections in DEPLOYMENT_GUIDE.md
+   → Or: Troubleshooting section in DEPLOYMENT_SCRIPTS_README.md
+
+================================================================================
+CUSTOMIZATION NOTES
+================================================================================
+
+Scripts can be easily customized:
+
+1. Spaceship domain:
+   - Edit deploy-to-vercel.sh, line 31: SPACESHIP_DOMAIN="..."
+
+2. Project name:
+   - Edit deploy-to-vercel.sh, line 32: PROJECT_NAME="inkluyo"
+
+3. Custom checks in verify-integrations.sh:
+   - Add new check functions following the pattern at lines 100+
+
+4. Additional endpoint tests:
+   - Add new test_endpoint calls in test-endpoints.sh
+
+All customizations preserve the script's core functionality.
+
+================================================================================
+DEPLOYMENT CHECKLIST
+================================================================================
+
+Pre-Deployment:
+  [ ] Run ./verify-integrations.sh (check passes)
+  [ ] Review DEPLOYMENT_QUICK_START.md
+  [ ] Ensure .env.local contains all credentials
+  [ ] Verify Vercel CLI installed: vercel login
+
+Preview Deployment:
+  [ ] Run ./deploy-to-vercel.sh preview
+  [ ] Get preview URL from output
+  [ ] Run ./test-endpoints.sh https://... (preview URL)
+  [ ] Manual testing: checkout flow, auth, emails
+
+Production Deployment:
+  [ ] Run ./deploy-to-vercel.sh production
+  [ ] Configure DNS records in Spaceship dashboard
+  [ ] Wait for DNS propagation (24-48 hours)
+  [ ] Verify domain in Vercel dashboard
+  [ ] Run ./test-endpoints.sh https://... (production URL)
+
+Post-Deployment:
+  [ ] Monitor Vercel logs: vercel logs
+  [ ] Test all user flows
+  [ ] Check error tracking
+  [ ] Monitor analytics dashboard
+
+================================================================================
+SUPPORT & RESOURCES
+================================================================================
+
+Documentation:
+  - DEPLOYMENT_QUICK_START.md (quick reference)
+  - DEPLOYMENT_GUIDE.md (detailed walkthrough)
+  - DEPLOYMENT_SCRIPTS_README.md (technical reference)
+
+External Resources:
+  - Vercel: https://vercel.com/docs
+  - Next.js: https://nextjs.org/docs/deployment
+  - NextAuth: https://next-auth.js.org
+  - Supabase: https://supabase.com/docs
+  - Stripe: https://stripe.com/docs
+  - Resend: https://resend.com/docs
+
+Key Dashboards:
+  - Vercel: https://vercel.com/dashboard
+  - Supabase: https://app.supabase.com
+  - Stripe: https://dashboard.stripe.com
+  - Resend: https://resend.com/emails
+
+================================================================================
+FINAL NOTES
+================================================================================
+
+1. All scripts read from .env.local (no credentials in scripts)
+2. Scripts are non-destructive unless deployment is explicitly initiated
+3. Exit codes follow Unix conventions (0=success, 1=failure)
+4. Color-coded output for easy reading
+5. Comprehensive error messages guide troubleshooting
+6. Scripts work offline for verification (except deployment)
+7. Each script can be run independently
+
+================================================================================
+Ready to deploy! Start with:
+  $ ./verify-integrations.sh
+  $ ./DEPLOYMENT_QUICK_START.md
+
+Happy deploying!
+================================================================================

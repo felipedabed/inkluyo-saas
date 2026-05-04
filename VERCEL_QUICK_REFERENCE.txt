@@ -1,0 +1,175 @@
+================================================================================
+VERCEL DEPLOYMENT QUICK REFERENCE
+================================================================================
+
+PREREQUISITES:
+  ✓ Vercel CLI installed: npm install -g vercel
+  ✓ Logged in to Vercel: vercel login
+  ✓ .env.local configured at apps/landing/.env.local
+
+================================================================================
+BASIC DEPLOYMENT FLOW
+================================================================================
+
+1. DIAGNOSE (optional but recommended)
+   ./scripts/diagnose-vercel.sh
+
+   This checks:
+   - Vercel CLI and login status
+   - Environment variables in Vercel
+   - Build configuration
+   - Widget status
+
+2. DEPLOY TO PREVIEW
+   ./deploy-to-vercel.sh preview
+
+   The script will:
+   - Load environment variables from .env.local
+   - Set them in Vercel for development, preview, and production environments
+   - Wait for Vercel to process variables
+   - Trigger a rebuild to pick up the variables
+   - Provide a link to monitor the deployment
+
+3. DEPLOY TO PRODUCTION
+   ./deploy-to-vercel.sh production
+
+   Same as above but deploys to production environment
+
+4. MONITOR
+   Visit: https://vercel.com/inkluyo
+   Click on the latest deployment to see logs
+
+================================================================================
+ENVIRONMENT VARIABLE MANAGEMENT
+================================================================================
+
+SYNC VARIABLES WITHOUT DEPLOYMENT:
+  ./scripts/setup-vercel-env.sh
+
+  Use this if:
+  - Variables are missing in Vercel dashboard
+  - You updated .env.local and need to sync
+  - You want to manually set variables without full deployment
+
+VIEW VARIABLES IN VERCEL:
+  https://vercel.com/inkluyo/settings/environment-variables
+
+  Check that these are set in all environments (Development, Preview, Production):
+  - NEXT_PUBLIC_SUPABASE_URL
+  - NEXT_PUBLIC_SUPABASE_ANON_KEY
+  - SUPABASE_SERVICE_ROLE_KEY
+  - STRIPE_SECRET_KEY
+  - NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY
+  - STRIPE_WEBHOOK_SECRET
+  - RESEND_API_KEY
+  - NEXTAUTH_SECRET
+  - NEXTAUTH_URL
+
+MANUALLY SET A VARIABLE:
+  # Development
+  echo "value" | vercel env add VARIABLE_NAME
+
+  # Preview
+  echo "value" | vercel env add VARIABLE_NAME preview
+
+  # Production
+  echo "value" | vercel env add VARIABLE_NAME production
+
+================================================================================
+TROUBLESHOOTING "supabaseUrl is required"
+================================================================================
+
+This error means environment variables aren't available during the Next.js build.
+
+SOLUTION 1: Verify and sync environment variables
+  ./scripts/setup-vercel-env.sh
+  Then: vercel redeploy
+
+SOLUTION 2: Manual rebuild after fixing
+  vercel redeploy           # Preview
+  vercel redeploy --prod    # Production
+
+SOLUTION 3: Check Vercel dashboard
+  https://vercel.com/inkluyo/settings/environment-variables
+  Make sure variables are set for all environments (not just production)
+
+SOLUTION 4: Force clear cache and rebuild
+  cd apps/landing
+  vercel env pull
+  cd ../..
+  vercel redeploy
+
+================================================================================
+BUILD AND WIDGET
+================================================================================
+
+BUILD COMMAND (automatic):
+  npm run landing:build
+
+  This is defined in vercel.json and runs automatically during deployment
+
+EMBED WIDGET (automatic):
+  npm run widget:embed
+
+  This is run automatically by deploy-to-vercel.sh before deployment
+  Manual trigger if needed: npm run widget:embed
+
+CHECK WIDGET:
+  File should exist: apps/landing/public/widget/widget.iife.js
+  If missing, run: npm run widget:embed
+
+================================================================================
+DEPLOYMENT LINKS
+================================================================================
+
+VERCEL DASHBOARD:
+  https://vercel.com/inkluyo
+
+ENVIRONMENT VARIABLES:
+  https://vercel.com/inkluyo/settings/environment-variables
+
+DEPLOYMENTS:
+  https://vercel.com/inkluyo/deployments
+
+BUILD LOGS:
+  Click on a deployment in Vercel dashboard to see build logs
+
+================================================================================
+COMMON COMMANDS
+================================================================================
+
+List recent deployments:
+  vercel list
+
+Show deployment status:
+  vercel list --json
+
+Trigger rebuild (preview):
+  vercel redeploy
+
+Trigger rebuild (production):
+  vercel redeploy --prod
+
+View environment variables:
+  vercel env ls
+
+Pull Vercel config locally:
+  vercel env pull
+
+Test endpoints after deployment:
+  ./test-endpoints.sh
+
+================================================================================
+FOR DETAILED INFORMATION
+================================================================================
+
+Read the complete guide: VERCEL_DEPLOYMENT.md
+
+It includes:
+- Detailed setup instructions
+- Comprehensive troubleshooting
+- Environment-specific configurations
+- Best practices
+- All available helper scripts
+
+================================================================================

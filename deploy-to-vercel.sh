@@ -132,19 +132,7 @@ echo ""
 echo -e "${BLUE}[4/6] Configuring Environment Variables in Vercel...${NC}"
 echo ""
 
-# Set environment variables for the specified environment
-ENV_FLAG=""
-if [ "$DEPLOYMENT_ENV" = "production" ]; then
-    ENV_FLAG="--prod"
-    TARGET_ENV="production"
-else
-    ENV_FLAG=""
-    TARGET_ENV="preview"
-fi
-
-echo "Setting environment variables for $TARGET_ENV environment..."
-
-# Arrays of env vars to set
+# Arrays of env vars to set (using lowercase keys for Vercel secrets)
 declare -a ENV_VARS=(
     "NEXT_PUBLIC_SUPABASE_URL=${SUPABASE_URL}"
     "NEXT_PUBLIC_SUPABASE_ANON_KEY=${SUPABASE_ANON}"
@@ -157,22 +145,66 @@ declare -a ENV_VARS=(
     "NEXTAUTH_URL=${NEXTAUTH_URL}"
 )
 
-# Set each variable
+# Function to set env var in all environments
+set_env_var_all_environments() {
+    local key="$1"
+    local value="$2"
+
+    if [ -z "$value" ]; then
+        echo -e "${YELLOW}⚠ Skipping $key (empty value)${NC}"
+        return
+    fi
+
+    echo -n "Setting $key in all environments... "
+
+    # Set for development
+    echo "$value" | vercel env add "$key" > /dev/null 2>&1
+
+    # Set for preview
+    echo "$value" | vercel env add "$key" preview > /dev/null 2>&1
+
+    # Set for production
+    echo "$value" | vercel env add "$key" production > /dev/null 2>&1
+
+    echo -e "${GREEN}✓${NC}"
+}
+
+# Set each variable in all environments
 for var in "${ENV_VARS[@]}"; do
     key="${var%%=*}"
     value="${var#*=}"
-
-    # Skip if value is empty
-    if [ -z "$value" ]; then
-        echo -e "${YELLOW}⚠ Skipping $key (empty value)${NC}"
-        continue
-    fi
-
-    echo "Setting $key..."
-    vercel env add "$key" $ENV_FLAG <<< "$value" > /dev/null 2>&1 || true
+    set_env_var_all_environments "$key" "$value"
 done
 
+echo ""
 echo -e "${GREEN}✓ Environment variables configured${NC}"
+
+# ============================================================================
+# 4.5 VERIFY ENVIRONMENT VARIABLES ARE SET
+# ============================================================================
+echo ""
+echo -e "${BLUE}[4.5/6] Verifying Environment Variables in Vercel...${NC}"
+echo ""
+
+echo "Verifying variables are stored in Vercel..."
+sleep 2  # Wait a moment for Vercel to process
+
+# Try to list env vars to verify they were set
+if vercel env ls > /dev/null 2>&1; then
+    echo "Attempting to verify environment variables (this may require manual verification in Vercel dashboard)..."
+    echo ""
+    echo -e "${YELLOW}IMPORTANT: Please verify the following variables are set in Vercel dashboard:${NC}"
+    for var in "${ENV_VARS[@]}"; do
+        key="${var%%=*}"
+        echo "  - $key"
+    done
+    echo ""
+    echo "Dashboard: https://vercel.com/${PROJECT_NAME}/settings/environment-variables"
+else
+    echo -e "${YELLOW}⚠ Could not verify variables (this is normal)${NC}"
+fi
+
+echo -e "${GREEN}✓ Variable configuration complete${NC}"
 
 # ============================================================================
 # 5. CONFIGURE BUILD SETTINGS
@@ -260,21 +292,26 @@ else
 fi
 
 # ============================================================================
-# 8. DEPLOYMENT
+# 8. REBUILD VERCEL PROJECT TO PICK UP ENVIRONMENT VARIABLES
 # ============================================================================
 echo ""
-echo -e "${BLUE}Ready for Deployment${NC}"
+echo -e "${BLUE}[8/8] Triggering Vercel Rebuild...${NC}"
 echo ""
 
+echo "Waiting for Vercel to process environment variables..."
+sleep 3
+
+# Trigger a rebuild to ensure new env vars are used during the build
+echo "Triggering rebuild in Vercel (this ensures env vars are available during build)..."
+cd "$PROJECT_ROOT"
+
+REBUILD_CMD="vercel redeploy"
 if [ "$DEPLOYMENT_ENV" = "production" ]; then
-    echo -e "${YELLOW}Deploying to PRODUCTION...${NC}"
-    cd "$PROJECT_ROOT"
-    vercel deploy --prod
-else
-    echo -e "${YELLOW}Deploying to PREVIEW...${NC}"
-    cd "$PROJECT_ROOT"
-    vercel deploy
+    REBUILD_CMD="vercel redeploy --prod"
 fi
+
+echo "Running: $REBUILD_CMD"
+$REBUILD_CMD
 
 echo ""
 echo -e "${GREEN}╔════════════════════════════════════════════════════════════════╗${NC}"
@@ -291,9 +328,22 @@ else
 fi
 
 echo ""
-echo "Next steps:"
-echo "1. Test all endpoints (see test-endpoints.sh)"
-echo "2. Verify analytics dashboard"
-echo "3. Test checkout flow"
-echo "4. Verify authentication"
+echo -e "${BLUE}Next steps:${NC}"
+echo "1. Monitor the deployment progress in Vercel dashboard:"
+if [ "$DEPLOYMENT_ENV" = "production" ]; then
+    echo "   https://vercel.com/${PROJECT_NAME}"
+else
+    echo "   https://vercel.com/${PROJECT_NAME}"
+fi
+echo ""
+echo "2. Once deployment succeeds, test:"
+echo "   - All API endpoints (see test-endpoints.sh)"
+echo "   - Analytics dashboard"
+echo "   - Checkout flow"
+echo "   - Authentication flow"
+echo ""
+echo -e "${YELLOW}If build still fails with 'supabaseUrl is required':${NC}"
+echo "1. Check Vercel dashboard environment variables are set for all environments"
+echo "2. Try manual redeploy: vercel redeploy"
+echo "3. Clear Vercel cache: vercel env pull"
 echo ""

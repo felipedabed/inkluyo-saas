@@ -15,21 +15,56 @@ export default function SignInForm() {
     setError("");
 
     try {
+      console.log("[SignInForm] Attempting sign in for:", email);
       const result = await signIn("email", {
         email,
         redirect: false,
       });
 
+      console.log("[SignInForm] Sign in result:", {
+        ok: result?.ok,
+        error: result?.error,
+        status: result?.status,
+      });
+
       if (result?.error) {
-        setError(result.error);
+        console.error("[SignInForm] Sign in error:", result.error);
+        const errorMessage = getErrorMessage(result.error);
+        setError(errorMessage);
+      } else if (result?.ok === false) {
+        console.error("[SignInForm] Sign in failed with status:", result.status);
+        setError(
+          "Failed to send sign-in link. Please check your email and try again."
+        );
       } else {
         setSubmitted(true);
       }
     } catch (err) {
-      setError("Something went wrong. Please try again.");
+      console.error("[SignInForm] Unexpected error:", err);
+      const errorMsg =
+        err instanceof Error ? err.message : "Something went wrong";
+      setError(
+        `Error: ${errorMsg}. Please try again or contact support.`
+      );
     } finally {
       setLoading(false);
     }
+  };
+
+  const getErrorMessage = (error: string): string => {
+    const errorMap: Record<string, string> = {
+      "Could not send email": "Failed to send email. Please try again.",
+      "Provider error": "Email provider is not configured correctly.",
+      "Callback error": "Authentication service error. Please try again.",
+      default: error,
+    };
+
+    for (const [key, value] of Object.entries(errorMap)) {
+      if (key !== "default" && error.includes(key)) {
+        return value;
+      }
+    }
+    return errorMap.default;
   };
 
   if (submitted) {
