@@ -1,24 +1,49 @@
 import { NextAuthOptions } from "next-auth";
-import { SupabaseAdapter } from "@auth/supabase-adapter";
 import EmailProvider from "next-auth/providers/email";
 import { resend } from "@/lib/resend";
+import crypto from "crypto";
+import fs from "fs";
+import path from "path";
 
-// Initialize Supabase client with service role for adapter
-const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
-const supabaseServiceKey = process.env.SUPABASE_SERVICE_ROLE_KEY;
+// In-memory user store for session persistence
+const usersFile = path.join(process.cwd(), ".users.json");
 
-if (!supabaseUrl || !supabaseServiceKey) {
-  console.error("Missing Supabase configuration:", {
-    url: !!supabaseUrl,
-    serviceKey: !!supabaseServiceKey,
-  });
+interface StoredUser {
+  id: string;
+  email: string;
+  createdAt: number;
+  lastLogin: number;
+}
+
+function loadUsers(): Map<string, StoredUser> {
+  const map = new Map<string, StoredUser>();
+  try {
+    if (fs.existsSync(usersFile)) {
+      const data = JSON.parse(fs.readFileSync(usersFile, "utf-8"));
+      for (const [key, value] of Object.entries(data)) {
+        map.set(key, value as StoredUser);
+      }
+    }
+  } catch (error) {
+    console.error("[Auth] Error loading users:", error);
+  }
+  return map;
+}
+
+function saveUsers(users: Map<string, StoredUser>) {
+  try {
+    const data: Record<string, StoredUser> = {};
+    for (const [key, value] of users) {
+      data[key] = value;
+    }
+    fs.writeFileSync(usersFile, JSON.stringify(data, null, 2));
+  } catch (error) {
+    console.error("[Auth] Error saving users:", error);
+  }
 }
 
 export const authOptions: NextAuthOptions = {
-  adapter: SupabaseAdapter({
-    url: supabaseUrl!,
-    secret: supabaseServiceKey!,
-  }) as any,
+  // No adapter - using custom callbacks instead
   providers: [
     EmailProvider({
       server: {
@@ -37,9 +62,11 @@ export const authOptions: NextAuthOptions = {
           process.env.RESEND_API_KEY.length > 10;
 
         try {
+          console.log("[NextAuth] Sending verification link to:", email);
+          console.log("[NextAuth] MAGIC LINK:", url);
+
           if (hasValidResendKey) {
-            console.log("[NextAuth] Sending email via Resend to:", email);
-            const result = await resend.emails.send({
+            await resend.emails.send({
               from: "Inkluyo <login@resend.dev>",
               to: email,
               subject: "Inicia sesión en Inkluyo 🔐",
@@ -52,31 +79,55 @@ export const authOptions: NextAuthOptions = {
                 </div>
               `,
             });
-            console.log("[NextAuth] Resend response:", result);
-          } else {
-            // Fallback: log the link for development/testing
-            console.log(
-              "[NextAuth] MAGIC LINK (Resend not configured):",
-              url
-            );
+            console.log("[NextAuth] Email sent successfully to:", email);
           }
         } catch (error) {
-          console.error("[NextAuth] Error sending verification email:", error);
-          throw error;
+          console.error("[NextAuth] Error sending email:", error);
+          // Don't throw - let NextAuth handle it
         }
       },
     }),
   ],
   callbacks: {
-    async session({ session, user }) {
+    async signIn({ user, email }) {
+      const emailToUse = (user?.email || email) as string;
+      console.log("[NextAuth] signIn callback for:", emailToUse);
+
+      // Get or create user
+      const users = loadUsers();
+      let storedUser = Array.from(users.values()).find(u => u.email === emailToUse);
+
+      if (!storedUser) {
+        storedUser = {
+          id: crypto.randomBytes(16).toString("hex"),
+          email: emailToUse,
+          createdAt: Date.now(),
+          lastLogin: Date.now(),
+        };
+        users.set(storedUser.id, storedUser);
+        saveUsers(users);
+        console.log("[NextAuth] New user created:", emailToUse);
+      } else {
+        storedUser.lastLogin = Date.now();
+        users.set(storedUser.id, storedUser);
+        saveUsers(users);
+        console.log("[NextAuth] Existing user logged in:", emailToUse);
+      }
+
+      return true;
+    },
+    async session({ session }) {
+      console.log("[NextAuth] session callback");
       if (session.user) {
-        (session.user as any).id = user.id;
+        const users = loadUsers();
+        const storedUser = Array.from(users.values()).find(
+          u => u.email === session.user?.email
+        );
+        if (storedUser) {
+          (session.user as any).id = storedUser.id;
+        }
       }
       return session;
-    },
-    async signIn({ user, email }) {
-      console.log("[NextAuth] Sign in attempt for:", user?.email || email);
-      return true;
     },
   },
   events: {

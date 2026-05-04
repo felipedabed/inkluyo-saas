@@ -1,17 +1,17 @@
 {
   "/_not-found/page": "/_not-found",
-  "/api/auth/[...nextauth]/route": "/api/auth/[...nextauth]",
   "/api/analytics/route": "/api/analytics",
-  "/api/send-snippet/route": "/api/send-snippet",
   "/api/checkout/route": "/api/checkout",
+  "/api/send-snippet/route": "/api/send-snippet",
+  "/api/auth/[...nextauth]/route": "/api/auth/[...nextauth]",
   "/auth/signin/page": "/auth/signin",
-  "/page": "/",
   "/auth/verify-request/page": "/auth/verify-request",
+  "/page": "/",
   "/[lang]/auth/signin/page": "/[lang]/auth/signin",
-  "/[lang]/auth/verify-request/page": "/[lang]/auth/verify-request",
-  "/[lang]/page": "/[lang]",
   "/[lang]/demo/page": "/[lang]/demo",
-  "/[lang]/pricing/page": "/[lang]/pricing",
+  "/[lang]/dashboard/page": "/[lang]/dashboard",
+  "/[lang]/auth/verify-request/page": "/[lang]/auth/verify-request",
   "/[lang]/get-started/page": "/[lang]/get-started",
-  "/[lang]/dashboard/page": "/[lang]/dashboard"
+  "/[lang]/pricing/page": "/[lang]/pricing",
+  "/[lang]/page": "/[lang]"
 }
