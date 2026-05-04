@@ -121,10 +121,15 @@ export const authOptions: NextAuthOptions = {
       return true;
     },
     async session({ session, user }) {
-      if (session.user && user) {
-        (session.user as any).id = (user as any).id;
+      if (user) {
+        (session.user as any) = {
+          email: user.email,
+          id: (user as any).id,
+          name: user.name,
+          image: user.image,
+        };
       }
-      console.log("[NextAuth] session callback:", session.user?.email);
+      console.log("[NextAuth] session callback:", { email: session.user?.email, userId: (session.user as any)?.id });
       return session;
     },
     async redirect({ url, baseUrl }) {
