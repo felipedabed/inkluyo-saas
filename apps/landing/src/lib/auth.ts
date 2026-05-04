@@ -9,7 +9,8 @@ const verificationTokens = new Map<string, any>();
 
 const memoryAdapter: any = {
   async createUser(user: any) {
-    const id = crypto.getRandomValues(new Uint8Array(16)).toString();
+    const bytes = crypto.getRandomValues(new Uint8Array(16));
+    const id = Array.from(bytes).map(b => b.toString(16).padStart(2, '0')).join('');
     const newUser = { ...user, id };
     users.set(id, newUser);
     return newUser;
@@ -73,6 +74,9 @@ const memoryAdapter: any = {
 
 export const authOptions: NextAuthOptions = {
   adapter: memoryAdapter,
+  session: {
+    strategy: "database",
+  },
   providers: [
     EmailProvider({
       async sendVerificationRequest({ identifier: email, url }) {
@@ -110,6 +114,27 @@ export const authOptions: NextAuthOptions = {
   pages: {
     signIn: "/auth/signin",
     verifyRequest: "/auth/verify-request",
+  },
+  callbacks: {
+    async signIn({ user, email }) {
+      console.log("[NextAuth] signIn callback:", { user: user?.email, email });
+      return true;
+    },
+    async session({ session, user }) {
+      if (session.user && user) {
+        (session.user as any).id = (user as any).id;
+      }
+      console.log("[NextAuth] session callback:", session.user?.email);
+      return session;
+    },
+    async redirect({ url, baseUrl }) {
+      console.log("[NextAuth] redirect callback:", { url, baseUrl });
+      // Allow redirects to the same origin
+      if (url.startsWith("/")) return `${baseUrl}${url}`;
+      // Allow redirects to the app domain
+      if (new URL(url).origin === baseUrl) return url;
+      return baseUrl + "/dashboard";
+    },
   },
   debug: process.env.NODE_ENV === "development",
 };
