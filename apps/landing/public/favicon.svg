@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 180 180" width="180" height="180">
+  <rect width="180" height="180" fill="#6c47ff" rx="40"/>
+  <g transform="translate(45, 45)" fill="white">
+    <!-- Accessibility icon: simplified human with accessibility symbol -->
+    <circle cx="45" cy="20" r="15"/>
+    <path d="M 30 40 Q 30 50 45 50 Q 60 50 60 40 M 45 50 L 45 75 M 20 60 L 70 60 M 45 75 L 30 90 M 45 75 L 60 90" stroke="white" stroke-width="4" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+  </g>
+</svg>

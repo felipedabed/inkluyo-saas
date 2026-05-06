@@ -15,7 +15,7 @@ export async function POST(req: NextRequest) {
     // Send email notification
     await resend.emails.send({
       from: "Inkluyo <noreply@resend.dev>",
-      to: "felipedabeds@gmail.com",
+      to: "hola@inkluyo.com",
       subject: `New contact request from ${name}`,
       html: `
         <div style="font-family: sans-serif; max-width: 600px; margin: 0 auto; padding: 20px;">

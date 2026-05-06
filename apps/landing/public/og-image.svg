@@ -1,0 +1,40 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 630" width="1200" height="630">
+  <!-- Background -->
+  <defs>
+    <linearGradient id="grad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#6c47ff;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#9089fc;stop-opacity:1" />
+    </linearGradient>
+  </defs>
+
+  <rect width="1200" height="630" fill="url(#grad)"/>
+
+  <!-- Decorative circles -->
+  <circle cx="150" cy="100" r="80" fill="rgba(255,255,255,0.1)"/>
+  <circle cx="1050" cy="550" r="120" fill="rgba(255,255,255,0.1)"/>
+
+  <!-- Main text -->
+  <text x="600" y="200" font-family="Arial, sans-serif" font-size="72" font-weight="bold" fill="white" text-anchor="middle">
+    Inkluyo
+  </text>
+
+  <text x="600" y="280" font-family="Arial, sans-serif" font-size="48" fill="rgba(255,255,255,0.95)" text-anchor="middle">
+    Web Accessibility
+  </text>
+
+  <text x="600" y="340" font-family="Arial, sans-serif" font-size="48" fill="rgba(255,255,255,0.95)" text-anchor="middle">
+    in One Line
+  </text>
+
+  <!-- Subtitle -->
+  <text x="600" y="420" font-family="Arial, sans-serif" font-size="28" fill="rgba(255,255,255,0.8)" text-anchor="middle">
+    WCAG 2.1 Compliant • ADA Friendly
+  </text>
+
+  <!-- Icon -->
+  <g transform="translate(500, 480)">
+    <circle cx="100" cy="0" r="40" fill="rgba(255,255,255,0.2)" stroke="white" stroke-width="2"/>
+    <circle cx="100" cy="0" r="25" fill="none" stroke="white" stroke-width="2"/>
+    <path d="M 100 -15 L 100 15 M 85 0 L 115 0" stroke="white" stroke-width="2" stroke-linecap="round"/>
+  </g>
+</svg>
