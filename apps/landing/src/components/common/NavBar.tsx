@@ -5,13 +5,13 @@ import type { Lang, Translations } from "@/lib/i18n";
 interface Props {
   lang: Lang;
   t: Translations["nav"];
+  onAnalyzeClick?: () => void;
 }
 
-export function NavBar({ lang, t }: Props) {
+export function NavBar({ lang, t, onAnalyzeClick }: Props) {
   const links: { href: string; label: string }[] = [
     { href: `/${lang}`, label: t.home },
     { href: `/${lang}/pricing`, label: t.pricing },
-    { href: `/${lang}/dashboard`, label: t.dashboard },
   ];
 
   return (
@@ -68,16 +68,16 @@ export function NavBar({ lang, t }: Props) {
 
         <div className="flex items-center gap-3">
           <LangSwitcher lang={lang} ariaLabel={t.languageSwitchAria} />
-          <Link
-            href={`/${lang}/get-started`}
+          <button
+            onClick={onAnalyzeClick}
             className="hidden sm:inline-flex items-center text-sm font-semibold px-3 py-1.5 rounded-lg text-white shadow-sm hover:opacity-95 transition"
             style={{
               background:
                 "linear-gradient(135deg, var(--color-brand) 0%, var(--color-brand-dark) 100%)",
             }}
           >
-            {t.install}
-          </Link>
+            {lang === "es" ? "Analizar mi sitio" : lang === "pt" ? "Analisar meu site" : "Analyze my site"}
+          </button>
         </div>
       </div>
     </nav>

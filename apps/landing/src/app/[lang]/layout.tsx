@@ -1,7 +1,6 @@
 import { notFound } from "next/navigation";
-import Script from "next/script";
 import { isLang, type Lang, getTranslations } from "@/lib/i18n";
-import { NavBar } from "@/components/common/NavBar";
+import { LangLayoutClient } from "@/components/layout/LangLayoutClient";
 import { WIDGET_VERSION } from "@/lib/widget-snippet";
 
 export async function generateStaticParams() {
@@ -21,21 +20,8 @@ export default async function LangLayout({
   const t = getTranslations(lang);
 
   return (
-    <div data-lang={lang} className="min-h-screen">
-      <NavBar lang={lang} t={t.nav} />
+    <LangLayoutClient lang={lang} t={t} widgetVersion={WIDGET_VERSION}>
       {children}
-
-      {/*
-        Mount the Inkluyo widget on every page of the landing.
-        We pass data-lang so the widget defaults to the page's language.
-      */}
-      <Script
-        src={`/widget/widget.iife.js?v=${WIDGET_VERSION}`}
-        data-inkluyo-widget=""
-        data-lang={lang}
-        data-site-id="demo-site"
-        strategy="afterInteractive"
-      />
-    </div>
+    </LangLayoutClient>
   );
 }

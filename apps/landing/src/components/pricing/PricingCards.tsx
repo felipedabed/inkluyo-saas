@@ -7,14 +7,20 @@ import type { Lang, Translations } from "@/lib/i18n";
 interface Props {
   lang: Lang;
   t: Translations["pricing"];
+  onContactClick?: () => void;
 }
 
-export function PricingCards({ lang, t }: Props) {
+export function PricingCards({ lang, t, onContactClick }: Props) {
   const [yearly, setYearly] = useState(false);
 
   const [loading, setLoading] = useState<string | null>(null);
 
   const handleCheckout = async (tierId: string) => {
+    // For Pro and Business, open contact modal instead of Stripe checkout
+    if (tierId === "pro" || tierId === "business") {
+      onContactClick?.();
+      return;
+    }
     if (tierId === "enterprise") return; // Handled by contact link
     
     setLoading(tierId);
