@@ -11,6 +11,7 @@ export interface Translations {
   nav: {
     home: string;
     pricing: string;
+    blog: string;
     getStarted: string;
     playground: string;
     dashboard: string;
@@ -174,6 +175,7 @@ const en: Translations = {
   nav: {
     home: "Home",
     pricing: "Pricing",
+    blog: "Blog",
     getStarted: "Get started",
     playground: "Playground",
     dashboard: "Dashboard",
@@ -485,6 +487,7 @@ const es: Translations = {
   nav: {
     home: "Inicio",
     pricing: "Precios",
+    blog: "Blog",
     getStarted: "Empezar",
     playground: "Playground",
     dashboard: "Dashboard",
@@ -796,6 +799,7 @@ const pt: Translations = {
   nav: {
     home: "Início",
     pricing: "Preços",
+    blog: "Blog",
     getStarted: "Começar",
     playground: "Playground",
     dashboard: "Dashboard",

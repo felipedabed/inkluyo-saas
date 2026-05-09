@@ -12,6 +12,7 @@ export function NavBar({ lang, t, onAnalyzeClick }: Props) {
   const links: { href: string; label: string }[] = [
     { href: `/${lang}`, label: t.home },
     { href: `/${lang}/pricing`, label: t.pricing },
+    { href: `/${lang}/blog`, label: t.blog },
   ];
 
   return (
