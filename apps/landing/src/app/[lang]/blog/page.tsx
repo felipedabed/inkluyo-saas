@@ -1,6 +1,6 @@
 import Link from "next/link";
 import { notFound } from "next/navigation";
-import { isLang, getTranslations, type Lang } from "@/lib/i18n";
+import { isLang, type Lang } from "@/lib/i18n";
 
 const blogPosts = {
   en: [
@@ -119,7 +119,6 @@ export default async function BlogPage({
   const { lang: rawLang } = await params;
   if (!isLang(rawLang)) notFound();
   const lang: Lang = rawLang;
-  const t = getTranslations(lang);
   const posts = blogPosts[lang] || blogPosts.en;
 
   const titles = {

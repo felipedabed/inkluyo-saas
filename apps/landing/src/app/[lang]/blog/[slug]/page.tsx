@@ -1,6 +1,6 @@
 import Link from "next/link";
 import { notFound } from "next/navigation";
-import { isLang, getTranslations, type Lang } from "@/lib/i18n";
+import { isLang, type Lang } from "@/lib/i18n";
 
 const blogArticles = {
   "wcag-compliance-guide": {
