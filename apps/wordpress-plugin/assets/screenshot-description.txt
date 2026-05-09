@@ -1,0 +1,6 @@
+1. The Inkluyo settings panel in WordPress admin - Configure colors, position, and language
+2. The accessibility widget button on a website - Small, discreet floating button
+3. Accessibility features menu - Users choose what they need (dyslexia, contrast, text size, etc.)
+4. High contrast mode enabled - Text and background colors inverted for readability
+5. Dyslexia-friendly fonts - Specialized typeface designed for dyslexic readers
+6. Dashboard showing analytics - See how visitors use accessibility features
