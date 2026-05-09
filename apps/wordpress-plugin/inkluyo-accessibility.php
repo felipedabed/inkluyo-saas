@@ -8,7 +8,7 @@
  * Author URI: https://github.com/felipedabed/inkluyo-saas
  * License: GPL2
  * License URI: https://www.gnu.org/licenses/gpl-2.0.html
- * Text Domain: inkluyo-accessibility
+ * Text Domain: inkluyo-accessibility-widget
  * Domain Path: /languages
  * Requires at least: 5.0
  * Requires PHP: 7.4
@@ -68,8 +68,8 @@ add_action( 'admin_menu', 'inkluyo_register_admin_menu' );
  */
 function inkluyo_register_admin_menu() {
     add_options_page(
-        __( 'Inkluyo Settings', 'inkluyo-accessibility' ),
-        __( 'Inkluyo', 'inkluyo-accessibility' ),
+        __( 'Inkluyo Settings', 'inkluyo-accessibility-widget' ),
+        __( 'Inkluyo', 'inkluyo-accessibility-widget' ),
         'manage_options',
         'inkluyo-settings',
         'inkluyo_admin_page'
@@ -147,15 +147,15 @@ function inkluyo_admin_page() {
     $hide_badge  = get_option( 'inkluyo_hide_badge', false );
     ?>
     <div class="wrap">
-        <h1><?php esc_html_e( 'Inkluyo Accessibility Settings', 'inkluyo-accessibility' ); ?></h1>
-        <p><?php esc_html_e( 'Configure your accessibility widget to match your brand and serve your visitors better.', 'inkluyo-accessibility' ); ?></p>
+        <h1><?php esc_html_e( 'Inkluyo Accessibility Settings', 'inkluyo-accessibility-widget' ); ?></h1>
+        <p><?php esc_html_e( 'Configure your accessibility widget to match your brand and serve your visitors better.', 'inkluyo-accessibility-widget' ); ?></p>
 
         <form method="post" action="options.php">
             <?php settings_fields( 'inkluyo_settings_group' ); ?>
             <table class="form-table">
                 <tr valign="top">
                     <th scope="row">
-                        <label for="inkluyo_color"><?php esc_html_e( 'Primary Color', 'inkluyo-accessibility' ); ?></label>
+                        <label for="inkluyo_color"><?php esc_html_e( 'Primary Color', 'inkluyo-accessibility-widget' ); ?></label>
                     </th>
                     <td>
                         <input
@@ -166,55 +166,55 @@ function inkluyo_admin_page() {
                             class="inkluyo-color-picker"
                         />
                         <p class="description">
-                            <?php esc_html_e( 'Choose the main color for the accessibility button and menu.', 'inkluyo-accessibility' ); ?>
+                            <?php esc_html_e( 'Choose the main color for the accessibility button and menu.', 'inkluyo-accessibility-widget' ); ?>
                         </p>
                     </td>
                 </tr>
 
                 <tr valign="top">
                     <th scope="row">
-                        <label for="inkluyo_position"><?php esc_html_e( 'Widget Position', 'inkluyo-accessibility' ); ?></label>
+                        <label for="inkluyo_position"><?php esc_html_e( 'Widget Position', 'inkluyo-accessibility-widget' ); ?></label>
                     </th>
                     <td>
                         <select id="inkluyo_position" name="inkluyo_position">
                             <option value="bottom-right" <?php selected( $position, 'bottom-right' ); ?>>
-                                <?php esc_html_e( 'Bottom Right', 'inkluyo-accessibility' ); ?>
+                                <?php esc_html_e( 'Bottom Right', 'inkluyo-accessibility-widget' ); ?>
                             </option>
                             <option value="bottom-left" <?php selected( $position, 'bottom-left' ); ?>>
-                                <?php esc_html_e( 'Bottom Left', 'inkluyo-accessibility' ); ?>
+                                <?php esc_html_e( 'Bottom Left', 'inkluyo-accessibility-widget' ); ?>
                             </option>
                         </select>
                         <p class="description">
-                            <?php esc_html_e( 'Choose where the floating accessibility button appears on your site.', 'inkluyo-accessibility' ); ?>
+                            <?php esc_html_e( 'Choose where the floating accessibility button appears on your site.', 'inkluyo-accessibility-widget' ); ?>
                         </p>
                     </td>
                 </tr>
 
                 <tr valign="top">
                     <th scope="row">
-                        <label for="inkluyo_lang"><?php esc_html_e( 'Default Language', 'inkluyo-accessibility' ); ?></label>
+                        <label for="inkluyo_lang"><?php esc_html_e( 'Default Language', 'inkluyo-accessibility-widget' ); ?></label>
                     </th>
                     <td>
                         <select id="inkluyo_lang" name="inkluyo_lang">
                             <option value="es" <?php selected( $lang, 'es' ); ?>>
-                                <?php esc_html_e( 'Español (Spanish)', 'inkluyo-accessibility' ); ?>
+                                <?php esc_html_e( 'Español (Spanish)', 'inkluyo-accessibility-widget' ); ?>
                             </option>
                             <option value="en" <?php selected( $lang, 'en' ); ?>>
-                                <?php esc_html_e( 'English', 'inkluyo-accessibility' ); ?>
+                                <?php esc_html_e( 'English', 'inkluyo-accessibility-widget' ); ?>
                             </option>
                             <option value="pt" <?php selected( $lang, 'pt' ); ?>>
-                                <?php esc_html_e( 'Português (Portuguese)', 'inkluyo-accessibility' ); ?>
+                                <?php esc_html_e( 'Português (Portuguese)', 'inkluyo-accessibility-widget' ); ?>
                             </option>
                         </select>
                         <p class="description">
-                            <?php esc_html_e( 'Set the default language for the accessibility widget.', 'inkluyo-accessibility' ); ?>
+                            <?php esc_html_e( 'Set the default language for the accessibility widget.', 'inkluyo-accessibility-widget' ); ?>
                         </p>
                     </td>
                 </tr>
 
                 <tr valign="top">
                     <th scope="row">
-                        <label for="inkluyo_hide_badge"><?php esc_html_e( 'Hide "Powered by Inkluyo"', 'inkluyo-accessibility' ); ?></label>
+                        <label for="inkluyo_hide_badge"><?php esc_html_e( 'Hide "Powered by Inkluyo"', 'inkluyo-accessibility-widget' ); ?></label>
                     </th>
                     <td>
                         <input
@@ -225,19 +225,19 @@ function inkluyo_admin_page() {
                             <?php checked( $hide_badge, 1 ); ?>
                         />
                         <p class="description">
-                            <?php esc_html_e( 'Check to hide the "Powered by Inkluyo" branding badge. We appreciate attribution!', 'inkluyo-accessibility' ); ?>
+                            <?php esc_html_e( 'Check to hide the "Powered by Inkluyo" branding badge. We appreciate attribution!', 'inkluyo-accessibility-widget' ); ?>
                         </p>
                     </td>
                 </tr>
             </table>
 
-            <?php submit_button( __( 'Save Settings', 'inkluyo-accessibility' ) ); ?>
+            <?php submit_button( __( 'Save Settings', 'inkluyo-accessibility-widget' ) ); ?>
         </form>
 
         <div style="margin-top: 40px; padding: 20px; background: #f5f5f5; border-radius: 4px;">
-            <h2><?php esc_html_e( 'Need Help?', 'inkluyo-accessibility' ); ?></h2>
+            <h2><?php esc_html_e( 'Need Help?', 'inkluyo-accessibility-widget' ); ?></h2>
             <p>
-                <?php esc_html_e( 'Visit our documentation or contact support at ', 'inkluyo-accessibility' ); ?>
+                <?php esc_html_e( 'Visit our documentation or contact support at ', 'inkluyo-accessibility-widget' ); ?>
                 <a href="https://inkluyo.com" target="_blank" rel="noopener">inkluyo.com</a>
             </p>
         </div>
