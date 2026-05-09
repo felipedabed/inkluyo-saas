@@ -1,11 +1,11 @@
 <?php
 /**
  * Plugin Name: Inkluyo Accessibility Widget
- * Plugin URI: https://inkluyo.com
+ * Plugin URI: https://inkluyo.com/plugin
  * Description: WCAG 2.1 AA compliant accessibility widget. Add dyslexia mode, high contrast, text sizing, and more to your site in seconds. No coding required.
  * Version: 1.0.0
- * Author: Inkluyo
- * Author URI: https://inkluyo.com
+ * Author: Inkluyo Team
+ * Author URI: https://github.com/felipedabed/inkluyo-saas
  * License: GPL2
  * License URI: https://www.gnu.org/licenses/gpl-2.0.html
  * Text Domain: inkluyo-accessibility
