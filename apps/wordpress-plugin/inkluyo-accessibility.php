@@ -85,10 +85,48 @@ add_action( 'admin_init', 'inkluyo_register_settings' );
  * Register plugin settings.
  */
 function inkluyo_register_settings() {
-    register_setting( 'inkluyo_settings_group', 'inkluyo_color' );
-    register_setting( 'inkluyo_settings_group', 'inkluyo_position' );
-    register_setting( 'inkluyo_settings_group', 'inkluyo_lang' );
-    register_setting( 'inkluyo_settings_group', 'inkluyo_hide_badge' );
+    register_setting(
+        'inkluyo_settings_group',
+        'inkluyo_color',
+        array(
+            'type'              => 'string',
+            'sanitize_callback' => 'sanitize_hex_color',
+            'default'           => '#6c47ff',
+        )
+    );
+    register_setting(
+        'inkluyo_settings_group',
+        'inkluyo_position',
+        array(
+            'type'              => 'string',
+            'sanitize_callback' => function( $value ) {
+                return in_array( $value, array( 'bottom-right', 'bottom-left' ), true ) ? $value : 'bottom-right';
+            },
+            'default'           => 'bottom-right',
+        )
+    );
+    register_setting(
+        'inkluyo_settings_group',
+        'inkluyo_lang',
+        array(
+            'type'              => 'string',
+            'sanitize_callback' => function( $value ) {
+                return in_array( $value, array( 'es', 'en', 'pt' ), true ) ? $value : 'es';
+            },
+            'default'           => 'es',
+        )
+    );
+    register_setting(
+        'inkluyo_settings_group',
+        'inkluyo_hide_badge',
+        array(
+            'type'              => 'boolean',
+            'sanitize_callback' => function( $value ) {
+                return ! empty( $value ) ? 1 : 0;
+            },
+            'default'           => false,
+        )
+    );
 }
 
 /**

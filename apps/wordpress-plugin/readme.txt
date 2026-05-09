@@ -4,7 +4,7 @@ Donate link: https://inkluyo.com
 Tags: accessibility, wcag, ada, a11y, widget, inclusiveness, dyslexia, low vision, keyboard navigation, screen reader
 Requires at least: 5.0
 Requires PHP: 7.4
-Tested up to: 6.7
+Tested up to: 6.9
 Stable tag: 1.0.0
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
