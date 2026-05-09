@@ -1,7 +1,7 @@
 === Inkluyo Accessibility Widget ===
 Contributors: felipedabed
 Donate link: https://inkluyo.com
-Tags: accessibility, wcag, ada, a11y, widget, inclusiveness, dyslexia, low vision, keyboard navigation, screen reader
+Tags: accessibility, wcag, ada, a11y, inclusive
 Requires at least: 5.0
 Requires PHP: 7.4
 Tested up to: 6.9
